@@ -24,7 +24,7 @@ const Lesson1 = ({ onExit }) => {
 
     const pages = [
         {
-            title: "How LLMs Actually Work (Without the Fairy Dust ✨)",
+            title: "How LLMs Actually Work",
             text: (
                 <div style={{ textAlign: "center" }}>
                     <img
@@ -38,11 +38,11 @@ const Lesson1 = ({ onExit }) => {
                         }}
                     />
                     <p style={{ marginBottom: 8 }}>
-                        <strong>Hot take:</strong> LLMs don’t “think.” They <em>autocomplete</em>… with confidence.
+                        <strong>Hot take:</strong> LLMs don’t “think.” They only guess the next word with confidence.
                     </p>
                     <p style={{ marginBottom: 8 }}>
-                        In 10 minutes, you’ll learn <strong>one mechanism</strong> that explains brilliance, creativity, hallucinations,
-                        and how to reduce “confident nonsense” in real decisions.
+                        In 10 minutes, you’ll learn <strong>one mechanism</strong> that explains the capabilities, creativity, hallucinations,
+                        of LLMs and how to reduce “confident nonsense” in real decisions.
                     </p>
                     <p style={{ opacity: 0.85 }}>
                         You’ll also get three practical guardrails that make LLM output feel less like a magic trick and more like a reliable assistant.
@@ -330,7 +330,7 @@ const Lesson1 = ({ onExit }) => {
         },
 
         {
-            title: "Interactive: Fix a Vague Request with One Example",
+            title: "Interactive: Customer Review Summary Feature",
             /*
               Activity: FewShotPromptFixer
               Purpose: Learners practice choosing the best example template to reduce ambiguity.
@@ -339,10 +339,10 @@ const Lesson1 = ({ onExit }) => {
             text: (
                 <>
                     <p>
-                        Challenge: you have messy notes. Add one example so the model knows what “good” looks like.
+                        <strong>Challenge:</strong> You need to auto-summarize reviews for *every* product category (Socks, Toasters, Laptops).
                     </p>
                     <p style={{ opacity: 0.9 }}>
-                        This is ambiguity mitigation through probability steering—not begging the model to “be smarter.”
+                        How do you prompt the model so it works for all of them?
                     </p>
                 </>
             ),
