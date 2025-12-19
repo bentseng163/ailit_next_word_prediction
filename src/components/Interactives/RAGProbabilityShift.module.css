@@ -2,96 +2,131 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    padding: 16px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
+    padding-bottom: 20px;
 }
 
 .header {
-    font-size: 0.9rem;
-    color: var(--color-text-secondary);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.question {
     font-family: monospace;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 8px;
-    border-radius: 6px;
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
 }
 
 .toggleBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--color-border);
-    background: transparent;
-    color: var(--color-text-primary);
+    flex: 1;
+    padding: 10px;
     border-radius: 8px;
-    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: transparent;
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
     font-weight: 600;
+    cursor: pointer;
     transition: all 0.2s;
-}
-
-.toggleBtn:hover {
-    background: rgba(255, 255, 255, 0.05);
 }
 
 .toggleBtn.active {
     background: var(--color-accent-primary);
-    border-color: var(--color-accent-primary);
     color: #121212;
+    border-color: var(--color-accent-primary);
 }
 
-.graph {
+.arrow {
+    color: var(--color-text-secondary);
+    font-size: 1.2rem;
+}
+
+.contextBox {
+    background: #1e1e1e;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    min-height: 100px;
+}
+
+.contextLabel {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+}
+
+.contextText {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--color-text-primary);
+}
+
+.contextText.highlight {
+    color: var(--color-accent-primary);
+}
+
+.chart {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
 }
 
 .graphTitle {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--color-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
     margin-bottom: 4px;
 }
 
-.barContainer {
+.barRow {
     display: flex;
     align-items: center;
     gap: 12px;
-    height: 24px;
 }
 
 .barLabel {
-    width: 80px;
-    text-align: right;
+    width: 60px;
     font-size: 0.85rem;
+    text-align: right;
+    color: var(--color-text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.barWrapper {
+.barTrack {
     flex: 1;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
-    gap: 8px;
+}
+
+.barFill {
     height: 100%;
-}
-
-.bar {
-    height: 16px;
-    background: var(--color-border);
     border-radius: 4px;
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
-.barHighlight {
-    background: var(--color-accent-success);
-}
-
-.perc {
-    font-size: 0.8rem;
-    color: var(--color-text-secondary);
-    min-width: 30px;
+.probText {
+    position: relative;
+    z-index: 10;
+    font-size: 0.75rem;
+    margin-left: 8px;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    font-weight: 600;
 }

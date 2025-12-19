@@ -1,0 +1,166 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.selectionView {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.header {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    text-align: center;
+    margin: 0;
+}
+
+.subHeader {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-top: -12px;
+    margin-bottom: 8px;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.optionCard {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.optionCard:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.optionCard.selected {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: var(--color-accent-primary);
+}
+
+.iconBox {
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+}
+
+.optionCard.selected .iconBox {
+    color: var(--color-accent-primary);
+}
+
+.optionText {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--color-text-primary);
+}
+
+.radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.optionCard.selected .radio {
+    border-color: var(--color-accent-primary);
+}
+
+.radioFill {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-accent-primary);
+}
+
+.customInputBox {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.customInput {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    padding: 4px 0;
+    width: 100%;
+}
+
+.customInput:focus {
+    outline: none;
+    border-bottom-color: var(--color-accent-primary);
+}
+
+.submitBtn {
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--color-accent-primary);
+    color: #121212;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.submitBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--color-border);
+}
+
+.loadingView {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 300px;
+}
+
+.spinner {
+    color: var(--color-accent-primary);
+    margin-bottom: 24px;
+}
+
+.loadingText {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--color-text-primary);
+}
+
+.loadingSub {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+}

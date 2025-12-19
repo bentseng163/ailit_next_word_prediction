@@ -14,13 +14,119 @@ import RAGSnippetPicker from '../components/Interactives/RAGSnippetPicker';
 import FewShotSteerer from '../components/Interactives/FewShotSteerer';
 import FewShotPromptFixer from '../components/Interactives/FewShotPromptFixer';
 import AccuracyCheck from '../components/Interactives/AccuracyCheck';
+import GoalSetter from '../components/GoalSetter/GoalSetter';
 
 // Icons for Strategy Simulation
 import { ClipboardList, FolderSearch, Layers, ShieldCheck } from 'lucide-react';
 
 const Lesson1 = ({ onExit }) => {
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(-1); // Start at -1 for GoalSetter
     const [canProceed, setCanProceed] = useState(true);
+    const [userGoal, setUserGoal] = useState('default'); // 'default', 'productivity', 'shipping'
+
+    // --- Scenario Definitions ---
+
+    // 1. RAG Scenarios
+    const ragScenarios = {
+        default: undefined, // Use component default (Apple)
+        productivity: {
+            question: "Prompt: 'What are the action items from the meeting?'",
+            noRagContext: "Model guesses generic action items (based on training data of typical meetings).",
+            ragContext: "Retrieved Transcript: 'Ben said he will fix the bug by EOD...'",
+            items: [
+                { word: "Schedule", probBefore: 30, probAfter: 5, color: "var(--color-text-secondary)" },
+                { word: "Fix_Bug", probBefore: 10, probAfter: 80, color: "var(--color-accent-primary)" },
+                { word: "Sync", probBefore: 20, probAfter: 10, color: "var(--color-text-secondary)" },
+                { word: "None", probBefore: 40, probAfter: 5, color: "var(--color-text-secondary)" }
+            ]
+        },
+        shipping: {
+            question: "Prompt: 'How do I authenticate with the API?'",
+            noRagContext: "Model hallucinations a sound-alike method (e.g. auth.login()).",
+            ragContext: "Retrieved Docs: 'Use the X-Auth-Token header...'",
+            items: [
+                { word: "auth.login", probBefore: 60, probAfter: 5, color: "var(--color-text-secondary)" },
+                { word: "Header", probBefore: 10, probAfter: 85, color: "var(--color-accent-primary)" },
+                { word: "OAuth", probBefore: 20, probAfter: 5, color: "var(--color-text-secondary)" },
+                { word: "Cookie", probBefore: 10, probAfter: 5, color: "var(--color-text-secondary)" }
+            ]
+        }
+    };
+
+    // 2. Few-Shot Steerer Scenarios
+    const steererScenarios = {
+        default: undefined, // Meeting Brief
+        productivity: {
+            // Reusing Meeting Brief as it fits well, but customizing slightly for "Email" focus
+            instruction: "Steer the format: Turn raw notes into a client email.",
+            outputs: {
+                '0': { variations: ["Notes: Client wants X. Email them.", "Hey, client said X by Q4. Price high.", "Draft: feature X, Q4, price?"] },
+                '1': { variations: ["Subject: Meeting\nHi, Client wants Feature X by Q4. Price is issue.\nThanks.", "Subject: Update\nFeature X is needed by Q4. Risk: Price.\nBest, AI"] },
+                '3': { variations: ["Subject: Sync Summary\n\nHi Team,\n\nClient: Acme\nAsk: Feature X (Q4)\nRisk: Pricing\n\nBest,", "Subject: Sync Summary\n\nHi Team,\n\nClient: Acme\nAsk: Feature X (Q4)\nRisk: Pricing\n\nBest,"] }
+            }
+        },
+        shipping: {
+            instruction: "Steer the format: Unstructured Text -> JSON.",
+            outputs: {
+                '0': { variations: ["{ name: 'Acme', Q4 }", "JSON: name=Acme, feature=X", "Error: unexpected token."] },
+                '1': { variations: ["{ \"client\": \"Acme\", \"ask\": \"Feature X\" }", "{ \"customer\": \"Acme\", \"req\": \"Feature X\" }"] },
+                '3': { variations: ["{\n  \"client\": \"Acme\",\n  \"feature\": \"X\",\n  \"deadline\": \"Q4\"\n}", "{\n  \"client\": \"Acme\",\n  \"feature\": \"X\",\n  \"deadline\": \"Q4\"\n}"] }
+            }
+        }
+    };
+
+    // 3. Prompt Fixer Scenarios
+    const fixerScenarios = {
+        default: undefined, // Ecommerce
+        productivity: {
+            instruction: "Scenario: Summarize a <strong>50-page Technical Report</strong>.",
+            options: {
+                'none': {
+                    label: 'No Example',
+                    prompt: "Summarize this report.",
+                    feedback: "The model might give you a 10-page essay or a 1-sentence blurb. You have no control over length or depth.",
+                    outputs: ["The report discusses X, Y, Z and also A, B, C... [100 lines follow]", "It's about technology.", "Chapter 1 says..."],
+                    isCorrect: false
+                },
+                'one': {
+                    label: 'One Ex.',
+                    prompt: "Summarize this report.\nExample: [Summary of a different financial report]",
+                    feedback: "Risky. If your example focuses on 'Financials', the model might ignore the technical details of the current report.",
+                    outputs: ["Financial Impact: N/A. (Missed the tech details)", "Revenue: $0. (It's a technical report!)"],
+                    isCorrect: false
+                },
+                'few': {
+                    label: 'Few Ex.',
+                    prompt: "Summarize (3 diverse examples showing 'Key Tech Findings' structure).",
+                    feedback: "Correct! You teach the pattern: Extract Key Tech Findings + Risk Analysis.",
+                    outputs: ["**Key Findings**\n1. Latency reduced\n2. Scale increased\n**Risks**\n- Cost", "**Key Findings**\n1. Modular arch\n2. Faster builds\n**Risks**\n- Migration"],
+                    isCorrect: true
+                }
+            }
+        },
+        shipping: undefined // Reuse Ecommerce as "Customer Review Analysis" is a valid shipping feature
+    };
+
+    // 4. Strategy Simulation Scenarios
+    const simulationScenarios = {
+        default: {
+            title: "Weekly Update Generator",
+            description: "Inputs: messy notes + dashboards. Output: structured update. Constraint: limited time.",
+        },
+        productivity: {
+            title: "Personal Email Assistant",
+            description: "Inputs: Incoming emails. Output: Draft replies. Constraint: Must be professional.",
+        },
+        shipping: {
+            title: "Enterprise RAG Chatbot",
+            description: "Inputs: 10k PDF docs. Output: Answer user questions. Constraint: No hallucinations allowed.",
+        }
+    };
+
+    const handleGoalSet = (goalType) => {
+        setUserGoal(goalType);
+        setCurrentPage(0); // Move to Cover page
+    };
 
     const pages = [
         {
@@ -43,26 +149,18 @@ const Lesson1 = ({ onExit }) => {
                         <strong>Hot take:</strong> LLMs don’t “think.” They only guess the next word with confidence.
                     </p>
                     <p style={{ marginBottom: 8 }}>
-                        In 10 minutes, you’ll learn <strong>one mechanism</strong> that explains the capabilities, creativity, hallucinations,
-                        of LLMs and how to reduce “confident nonsense” in real decisions.
+                        In 10 minutes, you’ll learn <strong>the core mechanism</strong> that explains the capabilities and hallucinations
+                        of LLMs and how to reduce “confident nonsense”.
                     </p>
-                    <p style={{ opacity: 0.85 }}>
-                        You’ll also get three practical guardrails that make LLM output feel less like a magic trick and more like a reliable assistant.
-                    </p>
+
                 </div>
             ),
             component: null,
             nextLabel: "Start",
         },
-
-
+        // ... (Pages 1-9 are largely static/concept based, skipping to Page 10 for first shift)
         {
             title: "The Autocomplete Mystery (You’ve Done This Before)",
-            /*
-              Activity: LyricsCompleter
-              Purpose: Demonstrate prediction ≠ thinking using a low-barrier fill-in-the-blank.
-              Learner Action: Tap a word chip to complete a phrase.
-            */
             text: (
                 <>
                     <p>
@@ -80,11 +178,6 @@ const Lesson1 = ({ onExit }) => {
 
         {
             title: "The Mechanism: Next-Word Prediction",
-            /*
-              Activity: PredictionVisualizer
-              Purpose: Visualize context -> probability distribution -> next token -> repeat.
-              Learner Action: Tap “Predict” to animate top candidates + probabilities.
-            */
             text: (
                 <>
                     <p>
@@ -104,11 +197,6 @@ const Lesson1 = ({ onExit }) => {
 
         {
             title: "Probability, Not Truth (The Plot Twist)",
-            /*
-              Activity: ProbabilityGraph
-              Purpose: Show multiple plausible next-words + optional 'creative' toggle.
-              Learner Action: Observe probabilities; optional toggle shifts distribution.
-            */
             text: (
                 <>
                     <p>
@@ -126,32 +214,7 @@ const Lesson1 = ({ onExit }) => {
             nextLabel: "So why hallucinations?",
         },
 
-        {
-            title: "Same Concept: Autocomplete vs LLM",
-            text: (
-                <div style={{ textAlign: "center" }}>
-                    <img
-                        src="/src/assets/autocomplete_vs_llm.png"
-                        alt="Autocomplete vs LLM"
-                        style={{
-                            width: "75%",
-                            height: "auto",
-                            display: "block",
-                            margin: "0 auto 16px auto",
-                            borderRadius: "12px",
-                        }}
-                    />
-                    <p>
-                        Your phone autocomplete and an LLM share the same core move: predict what comes next.
-                    </p>
-                    <p style={{ opacity: 0.9 }}>
-                        The difference is scale. LLMs learned patterns from an enormous amount of text—so their guesses can look impressively “expert.”
-                    </p>
-                </div>
-            ),
-            component: null,
-            nextLabel: "Where it goes wrong",
-        },
+
 
         {
             title: "The Plausibility Trap (Fluent ≠ Grounded)",
@@ -185,11 +248,6 @@ const Lesson1 = ({ onExit }) => {
 
         {
             title: "Interactive: The Ambiguity Trap",
-            /*
-              Activity: AmbiguityScenario
-              Purpose: Show vague prompts increase degrees of freedom → model fills gaps via next-word prediction.
-              Learner Action: Tap ambiguous parts -> Choose tighter rewrite.
-            */
             text: (
                 <>
                     <p>
@@ -239,9 +297,6 @@ const Lesson1 = ({ onExit }) => {
             nextLabel: "Start with RAG",
         },
 
-        // =========================
-        // RAG (SCAFFOLDED)
-        // =========================
         {
             title: "RAG: “Bring the Docs into the Room”",
             text: (
@@ -272,11 +327,6 @@ const Lesson1 = ({ onExit }) => {
 
         {
             title: "RAG Visual: Context Shifts the Next Words",
-            /*
-              Activity: RAGProbabilityShift
-              Purpose: Show task-specific probability distribution shift.
-              Learner Action: Toggle "No Ref" vs "With Ref" -> Observe probability bars.
-            */
             text: (
                 <>
                     <p>
@@ -287,17 +337,13 @@ const Lesson1 = ({ onExit }) => {
                     </p>
                 </>
             ),
-            component: <RAGProbabilityShift onComplete={() => setCanProceed(true)} />,
+            // DYNAMIC SCENARIO
+            component: <RAGProbabilityShift onComplete={() => setCanProceed(true)} scenario={ragScenarios[userGoal]} />,
             nextLabel: "Try it yourself",
         },
 
         {
             title: "Interactive: RAG Builder (Pick the Best Snippets)",
-            /*
-              Activity: RAGSnippetPicker
-              Purpose: Practice choosing what context to retrieve for grounding.
-              Learner Action: Choose 2 of 5 snippet cards -> See generated output.
-            */
             text: (
                 <>
                     <p>
@@ -312,9 +358,6 @@ const Lesson1 = ({ onExit }) => {
             nextLabel: "Next: examples (few-shot)",
         },
 
-        // =========================
-        // ONE-SHOT / FEW-SHOT
-        // =========================
         {
             title: "One-shot / Few-shot: “Show an Example Like This”",
             text: (
@@ -344,11 +387,6 @@ const Lesson1 = ({ onExit }) => {
 
         {
             title: "Interactive: Few-shot Steering",
-            /*
-              Activity: FewShotSteerer
-              Purpose: Show how adding examples changes probability of "follows format".
-              Learner Action: Toggle Examples (0/1/3) -> Observe output & consistency meter.
-            */
             text: (
                 <>
                     <p>
@@ -357,34 +395,28 @@ const Lesson1 = ({ onExit }) => {
                     </p>
                 </>
             ),
-            component: <FewShotSteerer onComplete={() => setCanProceed(true)} />,
+            // DYNAMIC SCENARIO
+            component: <FewShotSteerer onComplete={() => setCanProceed(true)} scenario={steererScenarios[userGoal]} />,
             nextLabel: "Do a quick challenge",
         },
 
         {
-            title: "Interactive: Customer Review Summary Feature",
-            /*
-              Activity: FewShotPromptFixer
-              Purpose: Learners practice choosing the best example template to reduce ambiguity.
-              Learner Action: Select an example format -> Compare outputs.
-            */
+            title: "Interactive: Pattern Design Challenge",
             text: (
                 <>
                     <p>
-                        <strong>Challenge:</strong> You are designing an AI customer review summary feature for an e-commerce website. The feature needs to auto-summarize reviews for *every* product category (Socks, Toasters, Laptops).
+                        <strong>Challenge:</strong> You need to ensure the AI follows the right format across diverse inputs.
                     </p>
                     <p style={{ opacity: 0.9 }}>
-                        How do you prompt the model so it works for all of them?
+                        How do you prompt the model so it works reliably?
                     </p>
                 </>
             ),
-            component: <FewShotPromptFixer onComplete={() => setCanProceed(true)} />,
+            // DYNAMIC SCENARIO
+            component: <FewShotPromptFixer onComplete={() => setCanProceed(true)} scenario={fixerScenarios[userGoal]} />,
             nextLabel: "Last: verify accuracy",
         },
 
-        // =========================
-        // HUMAN-IN-THE-LOOP
-        // =========================
         {
             title: "Human Check: Catch Mistakes Before They Spread",
             text: (
@@ -412,44 +444,20 @@ const Lesson1 = ({ onExit }) => {
             nextLabel: "Practice verifying claims",
         },
 
-        {
-            title: "Interactive: Accuracy Check (Supported or Not?)",
-            /*
-              Activity: AccuracyCheck
-              Purpose: Practice verifying claims against provided sources.
-              Learner Action: Tap claims -> Verify/Unverify in drawer.
-            */
-            text: (
-                <>
-                    <p>
-                        Here’s a short AI-generated summary. Tap each claim to see whether the provided notes actually support it.
-                    </p>
-                    <p style={{ opacity: 0.9 }}>
-                        The skill isn’t “trusting AI” or “distrusting AI.” It’s knowing what needs verification.
-                    </p>
-                </>
-            ),
-            component: <AccuracyCheck onComplete={() => setCanProceed(true)} />,
-            nextLabel: "Combine guardrails",
-        },
+
 
         {
             title: "Scenario Practice: Pick the Right Guardrails",
-            /*
-              Activity: StrategySimulation (Calibration)
-              Purpose: Choose guardrail bundles; feedback includes tradeoffs.
-            */
             text: (
                 <p>
-                    You need a weekly update generated from messy notes + dashboards. It must be structured and safe enough to share broadly.
-                    Which guardrails do you apply?
+                    You have a high-stakes task. Which guardrails do you apply to ensure safety and quality?
                 </p>
             ),
+            // DYNAMIC SCENARIO
             component: (
                 <StrategySimulation
                     scenario={{
-                        title: "Weekly Update Generator",
-                        description: "Inputs: messy notes + dashboards. Output: structured update. Constraint: limited time.",
+                        ...simulationScenarios[userGoal] || simulationScenarios.default,
                         strategies: [
                             {
                                 id: "fewshot",
@@ -533,6 +541,10 @@ const Lesson1 = ({ onExit }) => {
             onExit();
         }
     };
+
+    if (currentPage === -1) {
+        return <GoalSetter onGoalSet={handleGoalSet} />;
+    }
 
     const currentContent = pages[currentPage];
     const progress = ((currentPage + 1) / pages.length) * 100;
