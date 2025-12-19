@@ -1,0 +1,66 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #000;
+    /* Outer background */
+}
+
+.mobileFrame {
+    width: 100%;
+    max-width: 430px;
+    /* iPhone Max width approx */
+    height: 100%;
+    max-height: 932px;
+    background-color: var(--color-bg-main);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: var(--shadow-2xl);
+}
+
+.header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(15, 17, 22, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 10;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.progressBarContainer {
+    flex: 1;
+    height: 6px;
+    background-color: var(--color-bg-card-highlight);
+    border-radius: var(--radius-full);
+    margin-right: 12px;
+    overflow: hidden;
+}
+
+.progressBarFill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-secondary));
+    border-radius: var(--radius-full);
+}
+
+.pageIndicator {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding-top: 60px;
+    /* Header space */
+    display: flex;
+    flex-direction: column;
+}

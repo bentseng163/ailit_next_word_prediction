@@ -1,0 +1,113 @@
+.container {
+    background: var(--color-bg-card);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.prompt {
+    font-family: monospace;
+    background: var(--color-bg-main);
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    line-height: 1.4;
+    min-height: 48px;
+}
+
+.graphContainer {
+    min-height: 150px;
+    /* Prevent layout jump */
+}
+
+.graph {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.label {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin-bottom: 4px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wordLabel {
+    width: 50px;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+.barArea {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bar {
+    height: 24px;
+    border-radius: 4px;
+}
+
+.probLabel {
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+.predictBtn {
+    padding: 12px;
+    background: var(--color-accent-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.predictBtn:disabled {
+    background: var(--color-bg-card-highlight);
+    color: var(--color-text-muted);
+    cursor: default;
+}
+
+.finishedMsg {
+    text-align: center;
+    color: var(--color-success);
+    font-weight: 500;
+    padding: 20px;
+}
+
+.computingState {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--color-bg-card-highlight);
+    border-top: 3px solid var(--color-accent-primary);
+    border-radius: 50%;
+}
+
+.cursor {
+    color: var(--color-accent-primary);
+    font-weight: bold;
+    margin-left: 2px;
+}

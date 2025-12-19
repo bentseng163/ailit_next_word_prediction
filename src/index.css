@@ -1,0 +1,15 @@
+@import './styles/theme.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  /* Prevent scrolling outside the app container */
+  background-color: var(--color-bg-main);
+}

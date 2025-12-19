@@ -1,0 +1,108 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.scenarioCard {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 4px solid var(--color-accent-primary);
+    padding: 16px;
+    border-radius: var(--radius-sm);
+}
+
+.scenarioLabel {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--color-accent-primary);
+    margin-bottom: 4px;
+}
+
+.question {
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.optionsList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-bg-card-highlight);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 2px solid var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+}
+
+/* States */
+.selected {
+    border-color: var(--color-accent-primary);
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.selected .checkbox {
+    background: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+}
+
+.correct {
+    border-color: var(--color-success);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.correct .checkbox {
+    background: var(--color-success);
+    border-color: var(--color-success);
+}
+
+.wrong {
+    border-color: var(--color-danger);
+    opacity: 0.7;
+}
+
+.neutral {
+    opacity: 0.5;
+}
+
+.checkBtn {
+    margin-top: 8px;
+    padding: 12px;
+    background: var(--color-text-primary);
+    color: var(--color-bg-main);
+    border: none;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.feedbackBox {
+    margin-top: 12px;
+    padding: 12px;
+    background: var(--color-bg-card-highlight);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-size: 14px;
+    line-height: 1.5;
+}
