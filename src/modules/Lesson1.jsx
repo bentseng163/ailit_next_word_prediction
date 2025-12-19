@@ -31,9 +31,11 @@ const Lesson1 = ({ onExit }) => {
                         src="/src/assets/cover.png"
                         alt="LLM cover"
                         style={{
-                            width: "100%",
+                            width: "75%",
+                            height: "auto",
+                            display: "block",
+                            margin: "0 auto 16px auto",
                             borderRadius: "12px",
-                            marginBottom: "16px",
                             boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)",
                         }}
                     />
@@ -131,7 +133,13 @@ const Lesson1 = ({ onExit }) => {
                     <img
                         src="/src/assets/autocomplete_vs_llm.png"
                         alt="Autocomplete vs LLM"
-                        style={{ width: "100%", borderRadius: "12px", marginBottom: "16px" }}
+                        style={{
+                            width: "75%",
+                            height: "auto",
+                            display: "block",
+                            margin: "0 auto 16px auto",
+                            borderRadius: "12px",
+                        }}
                     />
                     <p>
                         Your phone autocomplete and an LLM share the same core move: predict what comes next.
@@ -152,7 +160,13 @@ const Lesson1 = ({ onExit }) => {
                     <img
                         src="/src/assets/plausibility_scale.png"
                         alt="Plausibility vs Evidence"
-                        style={{ width: "100%", borderRadius: "12px", marginBottom: "16px" }}
+                        style={{
+                            width: "75%",
+                            height: "auto",
+                            display: "block",
+                            margin: "0 auto 16px auto",
+                            borderRadius: "12px",
+                        }}
                     />
                     <p>
                         LLMs are optimized for <strong>plausible continuation</strong>—language that “fits.”
@@ -197,7 +211,13 @@ const Lesson1 = ({ onExit }) => {
                     <img
                         src="/src/assets/strategy_summary.png"
                         alt="Strategy summary"
-                        style={{ width: "100%", borderRadius: "12px", marginBottom: "12px" }}
+                        style={{
+                            width: "75%",
+                            height: "auto",
+                            display: "block",
+                            margin: "0 auto 12px auto",
+                            borderRadius: "12px",
+                        }}
                     />
                     <p style={{ marginBottom: 10, textAlign: "left" }}>
                         Since the model predicts what comes next, mitigation is about giving it better context so the “most likely next words” are closer to what you want.
@@ -229,7 +249,13 @@ const Lesson1 = ({ onExit }) => {
                     <img
                         src="/src/assets/rag_before_after.png"
                         alt="RAG before/after"
-                        style={{ width: "100%", borderRadius: "12px", marginBottom: "16px" }}
+                        style={{
+                            width: "75%",
+                            height: "auto",
+                            display: "block",
+                            margin: "0 auto 16px auto",
+                            borderRadius: "12px",
+                        }}
                     />
                     <p>
                         <strong>RAG</strong> (Retrieval-Augmented Generation) means: before the model predicts the next word, you first pull in relevant snippets
@@ -296,7 +322,13 @@ const Lesson1 = ({ onExit }) => {
                     <img
                         src="/src/assets/fewshot_before_after.png"
                         alt="Few-shot before/after"
-                        style={{ width: "100%", borderRadius: "12px", marginBottom: "16px" }}
+                        style={{
+                            width: "75%",
+                            height: "auto",
+                            display: "block",
+                            margin: "0 auto 16px auto",
+                            borderRadius: "12px",
+                        }}
                     />
                     <p>
                         One-shot / few-shot means giving one or a few examples of what you want—especially when your request is underspecified.
@@ -339,7 +371,7 @@ const Lesson1 = ({ onExit }) => {
             text: (
                 <>
                     <p>
-                        <strong>Challenge:</strong> You need to auto-summarize reviews for *every* product category (Socks, Toasters, Laptops).
+                        <strong>Challenge:</strong> You are designing an AI customer review summary feature for an e-commerce website. The feature needs to auto-summarize reviews for *every* product category (Socks, Toasters, Laptops).
                     </p>
                     <p style={{ opacity: 0.9 }}>
                         How do you prompt the model so it works for all of them?
@@ -360,7 +392,13 @@ const Lesson1 = ({ onExit }) => {
                     <img
                         src="/src/assets/hitl_loop.png"
                         alt="Human check loop"
-                        style={{ width: "100%", borderRadius: "12px", marginBottom: "16px" }}
+                        style={{
+                            width: "75%",
+                            height: "auto",
+                            display: "block",
+                            margin: "0 auto 16px auto",
+                            borderRadius: "12px",
+                        }}
                     />
                     <p>
                         Even with RAG and examples, the model can still produce a confident mistake—because it’s still predicting words.
@@ -456,7 +494,13 @@ const Lesson1 = ({ onExit }) => {
                     <img
                         src="/src/assets/cheat_sheet_v2.png"
                         alt="Cheat sheet"
-                        style={{ width: "100%", borderRadius: "12px", marginBottom: "16px" }}
+                        style={{
+                            width: "75%",
+                            height: "auto",
+                            display: "block",
+                            margin: "0 auto 16px auto",
+                            borderRadius: "12px",
+                        }}
                     />
                     <p style={{ marginBottom: 8 }}>
                         Everything today comes from one idea: the model predicts the next word.
