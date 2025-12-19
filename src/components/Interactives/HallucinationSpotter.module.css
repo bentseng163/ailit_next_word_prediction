@@ -1,0 +1,70 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card {
+    background: var(--color-bg-card);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-bg-card-highlight);
+    box-shadow: var(--shadow-sm);
+}
+
+.docTitle {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-bg-main);
+    padding-bottom: 8px;
+}
+
+.textBody {
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+}
+
+.sentence {
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+
+.sentence:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.flagged {
+    background: rgba(234, 179, 8, 0.2);
+    color: var(--color-warning);
+    text-decoration: underline;
+    text-decoration-style: wavy;
+}
+
+.successBox {
+    background: rgba(234, 179, 8, 0.1);
+    border: 1px solid var(--color-warning);
+    border-radius: var(--radius-md);
+    padding: 16px;
+}
+
+.successTitle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--color-warning);
+    margin-bottom: 8px;
+}
