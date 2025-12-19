@@ -1,0 +1,75 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.header {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.optBtn {
+    flex: 1;
+    min-width: 100px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.optBtn:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.optBtn.active {
+    background: var(--color-accent-primary);
+    color: #121212;
+    border-color: var(--color-accent-primary);
+    font-weight: 600;
+}
+
+.outputBox {
+    background: #1e1e1e;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    min-height: 100px;
+}
+
+.outputBox.good {
+    border-color: var(--color-accent-success);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.outputBox.bad {
+    border-color: var(--color-warning);
+    background: rgba(234, 179, 8, 0.05);
+}
+
+.boxLabel {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+}
+
+.boxContent {
+    font-family: monospace;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    line-height: 1.4;
+}

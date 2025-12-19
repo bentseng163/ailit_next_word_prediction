@@ -1,0 +1,116 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.instruction {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    flex: 1;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-text-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn.active {
+    background: var(--color-accent-primary);
+    color: #121212;
+    border-color: var(--color-accent-primary);
+}
+
+.preview {
+    background: #1e1e1e;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+}
+
+.previewHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+}
+
+.consistencyBadge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.output {
+    font-family: monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    flex: 1;
+}
+
+.regenBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.regenBtn:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.meterBox {
+    margin-top: 4px;
+}
+
+.meterLabel {
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+    color: var(--color-text-secondary);
+}
+
+.meterTrack {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.meterFill {
+    height: 100%;
+    background: var(--color-accent-success);
+    border-radius: 4px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}

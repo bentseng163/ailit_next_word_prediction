@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import styles from './HallucinationSpotter.module.css';
-import { AlertTriangle, CheckCircle, Search } from 'lucide-react';
+import { Search, AlertTriangle, CheckCircle, FileText } from 'lucide-react';
 
 const HallucinationSpotter = ({ onComplete }) => {
     const [found, setFound] = useState([]);
-    const [showSuccess, setShowSuccess] = useState(false);
+    const [showDrawer, setShowDrawer] = useState(false);
 
     const content = {
-        title: "Medical Summary: Caffeine Benefits",
-        text: [
-            { id: 1, text: "Caffeine blocks adenosine receptors, reducing fatigue.", isFake: false },
-            { id: 2, text: "It increases dopamine levels, improving mood and focus.", isFake: false },
-            { id: 3, text: "A 2024 study by Dr. A. I. Bot confirms it cures 90% of migraines.", isFake: true, feedback: "Hallucination! No such study exists. LLMs often invent citations." },
-            { id: 4, text: "Moderate consumption is generally considered safe.", isFake: false }
+        title: "Meeting Notes: Q3 Strategy",
+        items: [
+            { id: 1, text: "Revenue is up 12% YoY, driven by enterprise sales.", isFake: false },
+            { id: 2, text: "User retention remains stable at 85%.", isFake: false },
+            { id: 3, text: "Competitor Falcon just launched a features clone this morning.", isFake: true, feedback: "Evidence Check: No signal of this launch in any news or feed. The model predicted this because 'Competitor' + 'launch' is a common pattern." },
+            { id: 4, text: "Team morale is reported as high across engineering.", isFake: false }
         ]
     };
 
@@ -22,47 +22,55 @@ const HallucinationSpotter = ({ onComplete }) => {
 
         if (item.isFake) {
             setFound([...found, item.id]);
-            setShowSuccess(true);
+            setShowDrawer(true);
             if (onComplete) onComplete();
         } else {
-            alert("That statement is actually true/plausible. Keep looking for the fake citation.");
+            alert("No red flags here. This statement tracks with known data.");
         }
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <Search size={20} />
-                <span>Tap the suspicious claim</span>
+                <Search size={18} />
+                <span>Tap the "hallucinated" update</span>
             </div>
 
             <div className={styles.card}>
-                <h3 className={styles.docTitle}>{content.title}</h3>
-                <div className={styles.textBody}>
-                    {content.text.map((item) => (
-                        <motion.span
+                <div className={styles.cardHeader}>
+                    <FileText size={16} />
+                    <span>{content.title}</span>
+                </div>
+                <ul className={styles.list}>
+                    {content.items.map((item) => (
+                        <motion.li
                             key={item.id}
-                            className={`${styles.sentence} ${found.includes(item.id) ? styles.flagged : ''}`}
+                            className={`${styles.listItem} ${found.includes(item.id) ? styles.flagged : ''}`}
                             onClick={() => handleTap(item)}
                             whileTap={{ scale: 0.98 }}
                         >
-                            {item.text}{' '}
-                        </motion.span>
+                            <span className={styles.bullet}>•</span>
+                            <span>{item.text}</span>
+                        </motion.li>
                     ))}
-                </div>
+                </ul>
             </div>
 
-            {showSuccess && (
+            {showDrawer && (
                 <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={styles.successBox}
+                    className={styles.drawer}
+                    initial={{ y: "100%" }}
+                    animate={{ y: 0 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
-                    <div className={styles.successTitle}>
-                        <AlertTriangle size={20} color="var(--color-warning)" />
-                        <span>Fake Citation Detected</span>
+                    <div className={styles.drawerHeader}>
+                        <AlertTriangle size={20} className={styles.warningIcon} />
+                        <h4>Evidence Check</h4>
                     </div>
-                    <p>{content.text.find(t => t.isFake).feedback}</p>
+                    <p className={styles.feedback}>{content.items.find(i => i.isFake).feedback}</p>
+                    <div className={styles.mechanicNote}>
+                        <strong>Why?</strong> The model prioritized a plausible dramatic update over facts.
+                    </div>
                 </motion.div>
             )}
         </div>
