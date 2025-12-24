@@ -400,8 +400,9 @@ const Lesson2 = ({ onExit }) => {
             title: currentScenarioData.p11_title,
             text: (
                 <div>
+                    <p>Now that you've mastered the components of a prompt, let's put it to the test.</p>
                     <p>{currentScenarioData.p11_desc}</p>
-                    <p><strong>Mission:</strong> Build the safest pipeline.</p>
+                    <p><strong>Mission:</strong> Configure the pipeline below to minimize risk and errors.</p>
                 </div>
             ),
             component: <PipelineBuilder scenarioType="safety" onComplete={() => setCanProceed(true)} />,
@@ -413,8 +414,9 @@ const Lesson2 = ({ onExit }) => {
             title: currentScenarioData.p12_title,
             text: (
                 <div>
+                    <p>Great work on safety. Now let's switch gears to pure creativity.</p>
                     <p>{currentScenarioData.p12_desc}</p>
-                    <p><strong>Mission:</strong> Build the most creative pipeline.</p>
+                    <p><strong>Mission:</strong> Configure the pipeline to maximize variety and new ideas.</p>
                 </div>
             ),
             component: <PipelineBuilder scenarioType="creative" onComplete={() => setCanProceed(true)} />,

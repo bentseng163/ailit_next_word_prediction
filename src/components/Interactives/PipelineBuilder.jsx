@@ -149,6 +149,17 @@ const PipelineBuilder = ({ onComplete, scenarioType = 'safety' }) => {
                     </div>
                     <div className={styles.textArea}>
                         <div className={styles.feedbackText}>{result.feedback}</div>
+                        {result.score < 100 && (
+                            <button
+                                className={styles.retryLink}
+                                onClick={() => {
+                                    setSubmitted(false);
+                                    // Optional: Keep selections or clear them? keeping them is friendlier
+                                }}
+                            >
+                                Try Again
+                            </button>
+                        )}
                     </div>
                 </motion.div>
             )}
