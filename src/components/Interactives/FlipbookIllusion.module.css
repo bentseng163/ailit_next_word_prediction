@@ -1,0 +1,181 @@
+.container {
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.frameContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.frameLabel {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.frameBox {
+    width: 200px;
+    height: 120px;
+    background: white;
+    border: 2px solid #0f172a;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.ball {
+    width: 24px;
+    height: 24px;
+    background: #ef4444;
+    border-radius: 50%;
+    position: absolute;
+    top: 48px;
+    left: 80px;
+    z-index: 2;
+}
+
+.trail {
+    position: absolute;
+    top: 58px;
+    left: 40px;
+    width: 40px;
+    height: 4px;
+    background: rgba(239, 68, 68, 0.3);
+    border-radius: 2px;
+}
+
+.actionArea {
+    text-align: center;
+}
+
+.instruction {
+    font-size: 0.95rem;
+    color: #334155;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.primaryBtn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.primaryBtn:active {
+    background: #1d4ed8;
+    transform: translateY(1px);
+}
+
+.optionsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+.optionCard {
+    background: white;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.optionCard:hover {
+    border-color: #3b82f6;
+    background: #eff6ff;
+}
+
+.optionVisual {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+}
+
+.optionLabel {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 4px;
+}
+
+.optionDesc {
+    font-size: 0.7rem;
+    color: #64748b;
+}
+
+.feedbackArea {
+    animation: fadeIn 0.3s ease-in;
+}
+
+.feedbackHeader {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+.feedbackText {
+    font-size: 0.95rem;
+    color: #1e293b;
+    margin-bottom: 16px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.insightBox {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.insightBox p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #1e40af;
+    line-height: 1.4;
+}
+
+.icon {
+    color: #3b82f6;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

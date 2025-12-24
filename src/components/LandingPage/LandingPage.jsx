@@ -13,10 +13,18 @@ const LandingPage = ({ onSelectModule }) => {
         },
         {
             id: 'lesson2',
-            title: "Drafting with Probability",
-            desc: "How to use constraints to shift the model's output distribution.",
-            duration: "Coming Soon",
+            title: "How Image Generation Works",
+            desc: "Denoising, brand drift, and how to control the vibe.",
+            duration: "10 min",
             color: "var(--color-accent-secondary)",
+            locked: false
+        },
+        {
+            id: 'lesson3',
+            title: "How Video Generation Works",
+            desc: "Frame prediction, stability, and why drift happens.",
+            duration: "10 min",
+            color: "#8b5cf6",
             locked: false
         }
     ];

@@ -1,0 +1,107 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+}
+
+.poolArea {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 12px;
+    min-height: 100px;
+}
+
+.label {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 12px;
+}
+
+.chipGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chip {
+    padding: 8px 12px;
+    border-radius: 20px;
+    background: #333;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.emptyMsg {
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.3);
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.arrowArea {
+    display: flex;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.binsArea {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.binRow {
+    display: flex;
+    gap: 10px;
+}
+
+.bin {
+    flex: 1;
+    border: 1px dashed;
+    border-radius: 8px;
+    padding: 8px;
+    min-height: 80px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.binLabel {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.binContent {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.binChip {
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: white;
+}
+
+.placeholder {
+    color: rgba(255, 255, 255, 0.1);
+}
+
+.successBox {
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-accent-success);
+    font-weight: 600;
+    font-size: 0.9rem;
+}

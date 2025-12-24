@@ -1,0 +1,75 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.imagePreview {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.5s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.labelOverlay {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.8rem;
+    font-family: monospace;
+    backdrop-filter: blur(4px);
+}
+
+.controls {
+    display: flex;
+    gap: 12px;
+}
+
+.toggleBtn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.toggleBtn.active {
+    background: var(--color-accent-primary);
+    color: #121212;
+    border-color: var(--color-accent-primary);
+}
+
+.explanation {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.expHeader {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: 4px;
+}
+
+.expText {
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+}
