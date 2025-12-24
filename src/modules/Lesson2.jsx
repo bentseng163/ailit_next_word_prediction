@@ -8,6 +8,8 @@ import PromptClarityMeter from '../components/Interactives/PromptClarityMeter';
 import PromptSurgery from '../components/Interactives/PromptSurgery';
 import VariationKnob from '../components/Interactives/VariationKnob';
 import PipelineBuilder from '../components/Interactives/PipelineBuilder';
+import PromptDebugger from '../components/Interactives/PromptDebugger';
+import PromptTemplateMaker from '../components/Interactives/PromptTemplateMaker';
 
 // Assets (Nano Banana Generations)
 import imgRemote from '../assets/imggen-01-remote.png';
@@ -19,6 +21,8 @@ const Lesson2 = ({ onExit }) => {
 
     const pages = [
         // ## 1) Theory Anchor (5 pages)
+        // ... (Pages 1-6 unchanged) ...
+
 
         // ### Page 1 — The Magic Trick (Spoiler: It’s Not Magic)
         {
@@ -153,15 +157,14 @@ const Lesson2 = ({ onExit }) => {
             title: "Why This Matters: Fewer Re-Rolls",
             text: (
                 <div>
-                    <p>If you treat the model like a “camera,” you lose. If you treat it like a “design intern with infinite energy,” you win.</p>
-                    <p>Knowing it’s <strong>denoising toward likely patterns</strong> means you can give:</p>
+                    <p>Now you know that the model is “iteratively denoising toward what’s likely,” you can give <strong>constraints that shrink ambiguity</strong>, for example:</p>
                     <ul>
                         <li>composition</li>
                         <li>lighting</li>
                         <li>palette</li>
                         <li>do/don’t constraints</li>
                     </ul>
-                    <p>Result: <strong>less ambiguity → fewer regenerations</strong>.</p>
+                    <p>This will help you get your desired output with fewer regenerations.</p>
                 </div>
             ),
             /*
@@ -183,43 +186,34 @@ const Lesson2 = ({ onExit }) => {
                         <li>Is it <strong>missing reference</strong> (identity not anchored)?</li>
                         <li>Is it a <strong>known limitation</strong> (text/logos/hands)?</li>
                     </ul>
-                    <p>That’s not being technical. That’s being <em>usefully diagnostic</em>.</p>
-
-                    <div style={{ margin: '20px 0', border: '2px solid #000', borderRadius: 8, overflow: 'hidden' }}>
-                        {/* Placeholder for assets/imggen-07-debug-tree.svg */}
-                        <div style={{ background: '#F5F1E6', height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', flexDirection: 'column' }}>
-                            <strong>[Image: Debug Tree]</strong>
-                            <span style={{ fontSize: '0.8rem' }}>Ambiguity / Ref / Limitation</span>
-                        </div>
-                    </div>
+                    <p>Test your diagnostic skills on these 3 failed generations:</p>
                 </div>
             ),
-            component: null,
-            nextLabel: "Insight 1: Structure",
+            component: <PromptDebugger onComplete={() => setCanProceed(true)} />,
+            nextLabel: "Insight 1: Templates",
         },
 
         // ## 3) Practical Insights (3 pages)
 
-        // ### Page 8 — Insight 1: Separate Content vs Style
+        // ### Page 8 — Insight 1: Scalable Templates
         {
-            title: "Insight 1: Separate Content vs Style",
+            title: "Insight 1: Scalable Templates",
             text: (
                 <div>
-                    <p>Bad prompt: <em>“Make it premium and modern and cool and also show the thermostat with the new UI.”</em> (Mixing soup)</p>
-                    <p>Good prompt structure:</p>
+                    <p>Amateurs write a new prompt for every image.</p>
+                    <p>Pros build <strong>Templates</strong> that balance:</p>
                     <ul>
-                        <li><strong>Content:</strong> what makes the image</li>
-                        <li><strong>Style:</strong> how it should look</li>
-                        <li><strong>Constraints:</strong> what must NOT happen</li>
-                        <li><strong>Format:</strong> aspect ratio, specs</li>
+                        <li><strong>Consistency:</strong> Lock the style, lighting, and framing.</li>
+                        <li><strong>Variety:</strong> Swap only the subject or setting.</li>
                     </ul>
+                    <p>This is how you generate a 100-item catalog that looks like one cohesive photoshoot.</p>
                 </div>
             ),
             /*
-            INTERACTIVE SPEC (Page 8): prompt-surgery
-            Goal: Separation reduces ambiguity.
+            INTERACTIVE SPEC (Page 8): prompt-template-maker
+            Goal: Teach Locked vs Variable slots.
             */
-            component: <PromptSurgery onComplete={() => setCanProceed(true)} />,
+            component: <PromptTemplateMaker onComplete={() => setCanProceed(true)} />,
             nextLabel: "Insight 2: Identity",
         },
 
@@ -270,21 +264,31 @@ const Lesson2 = ({ onExit }) => {
 
         // ## 4) Scenario-based Personalized Practice & Recap
 
-        // ### Page 11 — Scenario: Build a Pipeline
+        // ### Page 11 — Scenario A: High-Stakes Launch
         {
-            title: "Scenario: Build a Pipeline",
+            title: "Boss Level: The High-Stakes Launch",
             text: (
                 <div>
                     <p>You need 12 campaign images for a landing page by tomorrow.</p>
-                    <p><strong>Goal:</strong> Consistent brand look, correct product identity, safe to publish.</p>
-                    <p>Build the pipeline by filling the missing pieces.</p>
+                    <p><strong>Constraints:</strong> Brand must be identical to website. No hallucinated products. Zero risk.</p>
+                    <p><strong>Mission:</strong> Build the safest pipeline.</p>
                 </div>
             ),
-            /*
-            INTERACTIVE SPEC (Page 11): pipeline-builder
-            Goal: Apply concept "denoise toward likely patterns" via constraints.
-            */
-            component: <PipelineBuilder onComplete={() => setCanProceed(true)} />,
+            component: <PipelineBuilder scenarioType="safety" onComplete={() => setCanProceed(true)} />,
+            nextLabel: "Next Scenario",
+        },
+
+        // ### Page 12 — Scenario B: The Ideation Jam
+        {
+            title: "Bonus Level: The Ideation Jam",
+            text: (
+                <div>
+                    <p>New client brief: "We need 50 wild, futuristic concepts for a mood board. Don't bore us."</p>
+                    <p><strong>Constraints:</strong> Speed matters. Coherence doesn't. We want accidents.</p>
+                    <p><strong>Mission:</strong> Build the most creative pipeline.</p>
+                </div>
+            ),
+            component: <PipelineBuilder scenarioType="creative" onComplete={() => setCanProceed(true)} />,
             nextLabel: "Recap",
         },
 

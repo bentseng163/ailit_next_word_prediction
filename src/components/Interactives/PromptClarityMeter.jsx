@@ -19,9 +19,9 @@ const PromptClarityMeter = ({ onComplete }) => {
             previews: ["p1_bad.png", "p2_bad.png", "p3_bad.png"]
         };
         if (selected === 'structured') return {
-            risk: 10,
-            riskLabel: "Low Re-Roll Risk",
-            iterations: "1-3",
+            risk: 35,
+            riskLabel: "Medium-Low Re-Roll Risk",
+            iterations: "2-5",
             previews: ["p1_good.png", "p2_good.png", "p3_good.png"]
         };
         return null;
@@ -66,7 +66,7 @@ const PromptClarityMeter = ({ onComplete }) => {
                 >
                     <div className={styles.boxHeader}>Structured Prompt</div>
                     <div className={styles.promptText}>
-                        "<strong>Subject:</strong> Cyberpunk City<br /><strong>Lighting:</strong> Neon Blue/Pink<br /><strong>View:</strong> Wide Angle"
+                        "A cinematic wide shot of a rainy cyberpunk city street at night, lit by neon blue and pink signs, highly detailed, realistic texture."
                     </div>
                 </div>
             </div>
@@ -87,10 +87,10 @@ const PromptClarityMeter = ({ onComplete }) => {
                                     <motion.div
                                         className={styles.meterFill}
                                         initial={{ width: 0 }}
-                                        animate={{ width: `${data.risk}%`, backgroundColor: selected === 'vague' ? 'var(--color-warning)' : 'var(--color-accent-success)' }}
+                                        animate={{ width: `${data.risk}%`, backgroundColor: selected === 'vague' ? '#f59e0b' : '#10b981' }}
                                     />
                                 </div>
-                                <div className={styles.metricValue} style={{ color: selected === 'vague' ? 'var(--color-warning)' : 'var(--color-accent-success)' }}>
+                                <div className={styles.metricValue} style={{ color: selected === 'vague' ? '#f59e0b' : '#10b981' }}>
                                     {data.riskLabel}
                                 </div>
                             </div>

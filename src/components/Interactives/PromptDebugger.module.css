@@ -1,0 +1,150 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.progress {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    text-align: right;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.context {
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.promptBox {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 3px solid #3b82f6;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.resultBox {
+    background: rgba(239, 68, 68, 0.1);
+    border-left: 3px solid #ef4444;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.promptText,
+.resultText {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.question {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.optionBtn {
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.optionBtn:active {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(0.98);
+}
+
+.feedback {
+    background: #111;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid;
+    margin-top: 8px;
+}
+
+.success {
+    border-color: rgba(16, 185, 129, 0.5);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.error {
+    border-color: rgba(239, 68, 68, 0.5);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.feedbackHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.success .feedbackHeader {
+    color: #10b981;
+}
+
+.error .feedbackHeader {
+    color: #ef4444;
+}
+
+.feedbackText {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+
+.nextBtn,
+.retryBtn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+}
+
+.nextBtn {
+    background: white;
+    color: black;
+    margin-left: auto;
+}
+
+.retryBtn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
