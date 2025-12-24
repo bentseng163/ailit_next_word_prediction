@@ -10,14 +10,141 @@ import VariationKnob from '../components/Interactives/VariationKnob';
 import PipelineBuilder from '../components/Interactives/PipelineBuilder';
 import PromptDebugger from '../components/Interactives/PromptDebugger';
 import PromptTemplateMaker from '../components/Interactives/PromptTemplateMaker';
+import GoalSetter from '../components/GoalSetter/GoalSetter';
 
 // Assets (Nano Banana Generations)
 import imgRemote from '../assets/imggen-01-remote.png';
 import imgTags from '../assets/imggen-02-tags.png';
 
 const Lesson2 = ({ onExit }) => {
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(-1); // Start at -1 for GoalSetter
     const [canProceed, setCanProceed] = useState(true);
+    const [userGoal, setUserGoal] = useState('default'); // 'default', 'productivity', 'shipping'
+
+    // --- Dynamic Scenarios ---
+
+    // Page 6: Debugger Scenarios
+    const debugScenarios = {
+        default: undefined,
+        productivity: [
+            {
+                id: 1,
+                context: "Scenario: Batch generating 100 blog headers.",
+                prompt: "Professional office header.",
+                resultDesc: "Result: 40% of images are cartoons. 60% are photos.",
+                options: [
+                    { id: 'ambiguity', label: "Ambiguity", correct: true, reason: "Correct! You didn't specify 'Photo Realism'. The model filled the gap with random styles." },
+                    { id: 'bad', label: "Bad Model", correct: false, reason: "The model isn't bad, it's just guessing unrelated styles because you didn't constrain it." }
+                ]
+            },
+            {
+                id: 2,
+                context: "Scenario: Need a team photo in Company Blue.",
+                prompt: "Team in blue shirts.",
+                resultDesc: "Result: Shirts are Navy, Cyan, Teal, and Sky Blue.",
+                options: [
+                    { id: 'ref', label: "Missing Reference", correct: true, reason: "Correct! 'Blue' is a spectrum. To get 'Company Blue', you need a Hex Token or Image Reference." },
+                    { id: 'glitch', label: "Color Glitch", correct: false, reason: "Not a glitch. Without a specific reference, the model samples from 'all possible blues'." }
+                ]
+            },
+            {
+                id: 3,
+                context: "Scenario: Need 10 people in a row.",
+                prompt: "10 people standing in a straight line.",
+                resultDesc: "Result: A crowd of 15 overlapping people.",
+                options: [
+                    { id: 'limit', label: "Counting Limitation", correct: true, reason: "Correct! Models are bad at counting past 3-4 objects. Don't rely on it for exact numbers." },
+                    { id: 'vague', label: "Vague Prompt", correct: false, reason: "Your prompt was specific ('10'), but the model's architecture struggles with numeracy." }
+                ]
+            }
+        ],
+        shipping: [
+            {
+                id: 1,
+                context: "Scenario: Generating a user avatar for the app.",
+                prompt: "Friendly user profile picture.",
+                resultDesc: "Result: A photo of a person with 7 fingers and a distorted eye.",
+                options: [
+                    { id: 'limit', label: "Anatomy Limitation", correct: true, reason: "Correct! Hands and eyes are common failure points. You need a negative prompt or post-processing restoration." },
+                    { id: 'vague', label: "Vague Prompt", correct: false, reason: "Even with a detailed prompt, structural anatomy can fail. It's a known model quirk." }
+                ]
+            },
+            {
+                id: 2,
+                context: "Scenario: Login screen background.",
+                prompt: "Clean gradient with a Login button.",
+                resultDesc: "Result: A button that says 'LGIN' or 'LOGGN'.",
+                options: [
+                    { id: 'text', label: "Text Limitation", correct: true, reason: "Correct! Never trust image models to spell key UI text. Generate it blank and overlay real text in code." },
+                    { id: 'ref', label: "Missing Reference", correct: false, reason: "A reference might help style, but the spelling issue is a fundamental tokenizer limitation." }
+                ]
+            },
+            {
+                id: 3,
+                context: "Scenario: Feature announcement card.",
+                prompt: "Exciting new feature launch!",
+                resultDesc: "Result: Chaos. Confetti, random robots, and lasers everywhere.",
+                options: [
+                    { id: 'ambiguity', label: "Ambiguity", correct: true, reason: "Correct! 'Exciting' is subjective. You need to constrain the subject: 'Minimalist 3D icon of a rocket'." },
+                    { id: 'bad', label: "Bad Luck", correct: false, reason: "Not luck. You gave a 'Concept' prompt instead of a 'Visual' prompt." }
+                ]
+            }
+        ]
+    };
+
+    // Page 8: Template Scenarios
+    const templateConfigs = {
+        default: undefined,
+        productivity: {
+            goal: "Scale Asset Production (100x)",
+            staticPrefix: "generating a social asset:",
+            chunks: [
+                { id: 0, text: "Minimalist layout of", type: "composition", isVar: false, lockedLabel: "Minimal Layout", varLabel: "[Layout]" },
+                { id: 1, text: "a productivity dashboard", type: "subject", isVar: false, lockedLabel: "Dashboard", varLabel: "[Product]" },
+                { id: 2, text: "on a clean white desk", type: "background", isVar: false, lockedLabel: "White Desk", varLabel: "[Background]" },
+                { id: 3, text: "high key lighting", type: "style", isVar: false, lockedLabel: "High Key", varLabel: "[Lighting]" },
+            ]
+        },
+        shipping: {
+            goal: "Consistent User Avatars",
+            staticPrefix: "creating a user avatar:",
+            chunks: [
+                { id: 0, text: "Close up portrait of", type: "composition", isVar: false, lockedLabel: "Portrait", varLabel: "[Angle]" },
+                { id: 1, text: "a friendly designer", type: "subject", isVar: true, lockedLabel: "Designer", varLabel: "[Persona]" },
+                { id: 2, text: "solid brand-blue background", type: "background", isVar: false, lockedLabel: "Blue Bg", varLabel: "[Background]" },
+                { id: 3, text: "flat vector art style", type: "style", isVar: false, lockedLabel: "Vector Style", varLabel: "[Style]" },
+            ]
+        }
+    };
+
+    // Page 11 & 12 Scenarios Labels
+    const scenarioContent = {
+        default: {
+            p11_title: "Boss Level: The High-Stakes Launch",
+            p11_desc: "Constraints: Brand must be identical to website. No hallucinated products. Zero risk.",
+            p12_title: "Bonus Level: The Ideation Jam",
+            p12_desc: "Constraints: Speed matters. Coherence doesn't. We want accidents."
+        },
+        productivity: {
+            p11_title: "The Deadline Crunch",
+            p11_desc: "Constraints: You need 50 assets by 5 PM. Pipeline must require ZERO manual editing.",
+            p12_title: "Rapid Prototyping",
+            p12_desc: "Constraints: Generate 20 different UI layouts in 2 minutes to unblock the design team."
+        },
+        shipping: {
+            p11_title: "The Production Release",
+            p11_desc: "Constraints: This image will be seen by 1M users. No 7-fingered hands allowed.",
+            p12_title: "Feature Exploration",
+            p12_desc: "Constraints: Explore wildly different visual directions for a new feature icon."
+        }
+    };
+
+    const handleGoalSet = (goalType) => {
+        setUserGoal(goalType);
+        setCurrentPage(0);
+    };
+
+    const currentScenarioData = scenarioContent[userGoal] || scenarioContent.default;
 
     const pages = [
         // ## 1) Theory Anchor (5 pages)
@@ -175,62 +302,63 @@ const Lesson2 = ({ onExit }) => {
             nextLabel: "Debugging outputs",
         },
 
-        // ### Page 7 — Credibility Move: Debugging
+        // ### Page 7 — Diagnosing Glitches
         {
-            title: "Credibility Move: Debugging",
+            title: "Diagnosing Glitches",
             text: (
                 <div>
-                    <p>When an output looks wrong, “the model sucks” is not actionable. A credible leader asks:</p>
+                    <p>When an image comes out wrong, it’s usually not random. It's a specific type of failure.</p>
+                    <p>To fix it, you need to identify the <strong>root cause</strong>:</p>
                     <ul>
-                        <li>Is it <strong>prompt ambiguity</strong> (content vs style mixed)?</li>
-                        <li>Is it <strong>missing reference</strong> (identity not anchored)?</li>
-                        <li>Is it a <strong>known limitation</strong> (text/logos/hands)?</li>
+                        <li>Is it <strong>Ambiguity</strong>? (You left it open to interpretation)</li>
+                        <li>Is it a <strong>Missing Reference</strong>? (The model had to guess)</li>
+                        <li>Is it a <strong>Limitation</strong>? (Models just struggle with this)</li>
                     </ul>
-                    <p>Test your diagnostic skills on these 3 failed generations:</p>
+                    <p>Can you identify the error in these 3 examples?</p>
                 </div>
             ),
-            component: <PromptDebugger onComplete={() => setCanProceed(true)} />,
+            /*
+            INTERACTIVE SPEC (Page 7): prompt-debugger
+            */
+            component: <PromptDebugger onComplete={() => setCanProceed(true)} customScenarios={debugScenarios[userGoal]} />,
             nextLabel: "Insight 1: Templates",
         },
 
         // ## 3) Practical Insights (3 pages)
 
-        // ### Page 8 — Insight 1: Scalable Templates
+        // ### Page 8 — Scalable Templates
         {
-            title: "Insight 1: Scalable Templates",
+            title: "Scalable Templates",
             text: (
                 <div>
-                    <p>Amateurs write a new prompt for every image.</p>
-                    <p>Pros build <strong>Templates</strong> that balance:</p>
+                    <p>Sometimes you aren’t aiming for a single perfect image, but a <strong>consistent pipeline</strong>.</p>
+                    <p>To generate a 100-item catalog that looks like one cohesive photoshoot, you build a <strong>Template</strong>:</p>
                     <ul>
-                        <li><strong>Consistency:</strong> Lock the style, lighting, and framing.</li>
-                        <li><strong>Variety:</strong> Swap only the subject or setting.</li>
+                        <li><strong>Lock elements</strong> you want to keep consistent (Style, Lighting).</li>
+                        <li><strong>Vary elements</strong> you want to change (Product, Subject).</li>
                     </ul>
-                    <p>This is how you generate a 100-item catalog that looks like one cohesive photoshoot.</p>
                 </div>
             ),
             /*
             INTERACTIVE SPEC (Page 8): prompt-template-maker
-            Goal: Teach Locked vs Variable slots.
             */
-            component: <PromptTemplateMaker onComplete={() => setCanProceed(true)} />,
-            nextLabel: "Insight 2: Identity",
+            component: <PromptTemplateMaker onComplete={() => setCanProceed(true)} config={templateConfigs[userGoal]} />,
+            nextLabel: "Identity",
         },
 
-        // ### Page 9 — Insight 2: Anchor Identity With References
+        // ### Page 9 — Anchoring Identity
         {
-            title: "Insight 2: Anchor Identity",
+            title: "Anchoring Identity",
             text: (
                 <div>
-                    <p>If you need <em>the</em> product, <em>the</em> logo, or <em>the</em> character… Text alone is a weak leash.</p>
-                    <p>Use:</p>
+                    <p>Templates handle style validation, but what about specific products?</p>
+                    <p>If you need <em>the</em> exact sneaker or <em>the</em> official logo, text alone is a weak leash. You need to <strong>anchor</strong> the model:</p>
                     <ul>
-                        <li>reference image</li>
-                        <li>style frame</li>
-                        <li>brand color tokens</li>
-                        <li>“must-match” notes</li>
+                        <li>Use an <strong>image reference</strong>.</li>
+                        <li>Upload a <strong>style frame</strong>.</li>
+                        <li>Define <strong>brand color tokens</strong>.</li>
                     </ul>
-
+                    <p>This prevents the model from "hallucinating" your product's details.</p>
                     <div style={{ margin: '20px 0', border: '2px solid #000', borderRadius: 8, overflow: 'hidden' }}>
                         {/* Placeholder for assets/imggen-09-reference-lock.svg */}
                         <div style={{ background: '#F5F1E6', height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', flexDirection: 'column' }}>
@@ -241,17 +369,20 @@ const Lesson2 = ({ onExit }) => {
                 </div>
             ),
             component: null,
-            nextLabel: "Insight 3: Variation",
+            nextLabel: "Variation",
         },
 
-        // ### Page 10 — Insight 3: Control Variation
+        // ### Page 10 — Controlling Variation
         {
-            title: "Insight 3: Control Variation",
+            title: "Controlling Variation",
             text: (
                 <div>
-                    <p>Variation is like telling the model: “Explore more possibilities.”</p>
-                    <p>Great for <strong>ideation</strong> (brainstorming new angles).</p>
-                    <p>Risky for <strong>brand-precise assets</strong> (we need the logo to stay put).</p>
+                    <p>You will often see a setting called <strong>Variation</strong> (or "Chaos").</p>
+                    <p>It controls how far the model can stray from your prompt's patterns:</p>
+                    <ul>
+                        <li><strong>Low Variation:</strong> Safe, predictable, adheres strictly to the prompt. Great for brand assets.</li>
+                        <li><strong>High Variation:</strong> Wild, unexpected, exploring new angles. Great for ideation.</li>
+                    </ul>
                 </div>
             ),
             /*
@@ -264,13 +395,12 @@ const Lesson2 = ({ onExit }) => {
 
         // ## 4) Scenario-based Personalized Practice & Recap
 
-        // ### Page 11 — Scenario A: High-Stakes Launch
+        // ### Page 11 — Scenario A
         {
-            title: "Boss Level: The High-Stakes Launch",
+            title: currentScenarioData.p11_title,
             text: (
                 <div>
-                    <p>You need 12 campaign images for a landing page by tomorrow.</p>
-                    <p><strong>Constraints:</strong> Brand must be identical to website. No hallucinated products. Zero risk.</p>
+                    <p>{currentScenarioData.p11_desc}</p>
                     <p><strong>Mission:</strong> Build the safest pipeline.</p>
                 </div>
             ),
@@ -278,13 +408,12 @@ const Lesson2 = ({ onExit }) => {
             nextLabel: "Next Scenario",
         },
 
-        // ### Page 12 — Scenario B: The Ideation Jam
+        // ### Page 12 — Scenario B
         {
-            title: "Bonus Level: The Ideation Jam",
+            title: currentScenarioData.p12_title,
             text: (
                 <div>
-                    <p>New client brief: "We need 50 wild, futuristic concepts for a mood board. Don't bore us."</p>
-                    <p><strong>Constraints:</strong> Speed matters. Coherence doesn't. We want accidents.</p>
+                    <p>{currentScenarioData.p12_desc}</p>
                     <p><strong>Mission:</strong> Build the most creative pipeline.</p>
                 </div>
             ),
@@ -340,6 +469,10 @@ const Lesson2 = ({ onExit }) => {
             onExit();
         }
     };
+
+    if (currentPage === -1) {
+        return <GoalSetter onGoalSet={handleGoalSet} />;
+    }
 
     const currentContent = pages[currentPage];
     const progress = ((currentPage + 1) / pages.length) * 100;

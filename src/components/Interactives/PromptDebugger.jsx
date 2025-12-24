@@ -3,11 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from './PromptDebugger.module.css';
 import { CheckCircle, XCircle, AlertTriangle, ArrowRight } from 'lucide-react';
 
-const PromptDebugger = ({ onComplete }) => {
-    const [currentScenario, setCurrentScenario] = useState(0);
-    const [feedback, setFeedback] = useState(null); // { isCorrect, text }
-
-    const scenarios = [
+const PromptDebugger = ({ onComplete, customScenarios }) => {
+    const defaultScenarios = [
         {
             id: 1,
             context: "Scenario: You need a sleek, modern ad for a summer sale.",
@@ -40,7 +37,22 @@ const PromptDebugger = ({ onComplete }) => {
         }
     ];
 
+    const scenarios = (customScenarios && customScenarios.length > 0) ? customScenarios : defaultScenarios;
+
+    const [currentScenario, setCurrentScenario] = useState(0);
+    const [feedback, setFeedback] = useState(null);
     const current = scenarios[currentScenario];
+
+    if (!current) {
+        return (
+            <div className={styles.container}>
+                <div style={{ padding: 20, color: 'red' }}>
+                    Error: Scenario data missing.
+                    <br />Debug Info: Scenarios Length: {scenarios?.length}
+                </div>
+            </div>
+        );
+    }
 
     const handleGuess = (option) => {
         setFeedback({
@@ -68,9 +80,7 @@ const PromptDebugger = ({ onComplete }) => {
                 <motion.div
                     key={current.id}
                     className={styles.card}
-                    initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
                 >
                     <div className={styles.context}>{current.context}</div>
 

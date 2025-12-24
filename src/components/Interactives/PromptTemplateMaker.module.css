@@ -14,55 +14,60 @@
     border-left: 3px solid var(--color-accent-primary);
 }
 
-.builderArea {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+.staticPrefix {
+    font-weight: bold;
+    color: var(--color-text-secondary);
+    margin-right: 4px;
+    opacity: 0.8;
 }
 
-.block {
+.promptContainer {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    font-family: monospace;
+    font-size: 1rem;
+    line-height: 2;
+    color: var(--color-text-primary);
     display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     align-items: center;
-    gap: 12px;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid;
+}
+
+.chunk {
+    padding: 4px 8px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 0.9rem;
-    text-align: left;
     transition: all 0.2s;
+    border: 1px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+}
+
+.chunkIcon {
+    opacity: 0.6;
 }
 
 .locked {
-    background: rgba(16, 185, 129, 0.1);
-    border-color: rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.4);
     color: #10b981;
 }
 
 .variable {
-    background: rgba(59, 130, 246, 0.1);
-    border-color: rgba(59, 130, 246, 0.3);
+    background: rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.4);
     color: #3b82f6;
+    border-style: dashed;
 }
 
-.icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.8;
-}
-
-.blockLabel {
-    font-size: 0.65rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    width: 60px;
-}
-
-.blockText {
-    font-family: monospace;
-    font-weight: 600;
-    flex: 1;
+.chunk:hover {
+    transform: scale(1.02);
+    filter: brightness(1.2);
 }
 
 .feedbackBox {
@@ -92,4 +97,29 @@
     background: rgba(245, 158, 11, 0.1);
     color: #f59e0b;
     border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.submitBtn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 8px;
+    background: #333;
+    color: #888;
+    font-weight: 600;
+    border: none;
+    cursor: not-allowed;
+    margin-top: 10px;
+    transition: all 0.2s;
+}
+
+.activeSubmit {
+    background: var(--color-accent-primary);
+    color: #000;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.activeSubmit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
 }
