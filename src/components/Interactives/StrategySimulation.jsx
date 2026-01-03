@@ -52,6 +52,27 @@ const StrategySimulation = ({ scenario, onComplete }) => {
                         <span>{selected.isRecommended ? "Great Strategy" : "Risky Approach"}</span>
                     </div>
                     <p>{selected.result}</p>
+
+                    {selected.metrics && (
+                        <div className={styles.metricsGrid}>
+                            {Object.entries(selected.metrics).map(([key, value]) => (
+                                <div key={key} className={styles.metricItem}>
+                                    <div className={styles.metricHeader}>
+                                        <span className={styles.metricLabel}>{key}</span>
+                                        <span className={styles.metricValue}>{value}/10</span>
+                                    </div>
+                                    <div className={styles.metricBarBg}>
+                                        <motion.div
+                                            className={styles.metricBarFill}
+                                            initial={{ width: 0 }}
+                                            animate={{ width: `${value * 10}%` }}
+                                            transition={{ duration: 0.5, ease: "easeOut" }}
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </motion.div>
             )}
         </div>

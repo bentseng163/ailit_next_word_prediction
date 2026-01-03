@@ -2,256 +2,237 @@ import React, { useState } from 'react';
 import Layout from '../components/Layout/Layout';
 import InteractiveCard from '../components/InteractiveCard/InteractiveCard';
 
-// Interactives
-import FlipbookIllusion from '../components/Interactives/FlipbookIllusion';
-import FrameDriftViewer from '../components/Interactives/FrameDriftViewer';
-import StoryboardBuilder from '../components/Interactives/StoryboardBuilder';
+// New Interactives
+import LatentPainterDemo from '../components/Interactives/LatentPainterDemo';
+import TransformerConnect from '../components/Interactives/TransformerConnect';
+import AudioSyncToggle from '../components/Interactives/AudioSyncToggle';
+import PhysicsTraining from '../components/Interactives/PhysicsTraining';
+
+// Reused Inteactives
 import KeyframeAnchorDemo from '../components/Interactives/KeyframeAnchorDemo';
 import ReferencePackPicker from '../components/Interactives/ReferencePackPicker';
-import VideoReviewChecklist from '../components/Interactives/VideoReviewChecklist';
-import StrategySimulation from '../components/Interactives/StrategySimulation'; // Reused
+import StrategySimulation from '../components/Interactives/StrategySimulation';
+import SwiftMerchActivity from '../components/Interactives/SwiftMerchActivity';
 
-// Icons and assets
-import { Play, Anchor, Layers, Shield } from 'lucide-react';
+// Icons
+import { Film, Palette, Scissors, Music, Brain, Shield, Shirt, User, FileText, Star } from 'lucide-react';
+
+// Conceptual Images
+import videoMagicImg from '../assets/lesson3/video_magic_formula.png';
+import studioTeamImg from '../assets/lesson3/motion_studio_team.png';
+import correlationImg from '../assets/lesson3/correlation_vs_causation.png';
+import pixelParrotImg from '../assets/lesson3/pixel_parrot.png';
+import recapImg from '../assets/lesson3/director_chair_recap.png';
 
 const Lesson3 = ({ onExit }) => {
     const [currentPage, setCurrentPage] = useState(0);
     const [canProceed, setCanProceed] = useState(true);
 
-    // Scenario for StrategySimulation
-    const videoLaunchScenario = {
-        title: "Launching a Product Video",
-        description: "You have a 6-second AI video. Stakeholders love it. What do you do?",
-        strategies: [
-            {
-                id: "ship",
-                name: "Ship it as-is",
-                icon: <Play size={24} />,
-                result: "High risk. Casual viewers might miss the drift, but eagle-eyed customers will spot the morphing logo.",
-                isRecommended: false
-            },
-            {
-                id: "internal",
-                name: "Internal Only",
-                icon: <Layers size={24} />,
-                result: "Safe. Great for mood boards and pitch decks where 'perfect' physics doesn't matter.",
-                isRecommended: true
-            },
-            {
-                id: "regen_guardrails",
-                name: "Regen + Guardrails",
-                icon: <Anchor size={24} />,
-                result: "Better. Using Storyboards and Keyframes reduces the weirdness significantly.",
-                isRecommended: true
-            },
-            {
-                id: "all_check",
-                name: "All + Human Review",
-                icon: <Shield size={24} />,
-                result: "Best for external. You caught the 3 frames where the product melted. Crisis averted.",
-                isRecommended: true
-            }
-        ]
-    };
-
     const pages = [
         {
-            title: "The Flipbook Illusion",
+            title: "Video Generation: The Magic Show",
             text: (
                 <div style={{ textAlign: "center" }}>
                     <p>
-                        Think of a video as a stack of images shown quickly.
+                        Video generation feels like magic, but it actually builds on top of concepts you already learned:
                     </p>
+                    {/* Visual: Image Gen + Next Token = Video */}
+                    <img
+                        src={videoMagicImg}
+                        alt="Equation: Image Gen + Next Token = Video"
+                        style={{ width: '100%', borderRadius: '8px', margin: '16px 0', border: '1px solid #e2e8f0' }}
+                    />
                     <p>
-                        To generate video, the AI just looks at the current frame and guesses:
-                        <br />
-                        <strong>"What pattern comes next?"</strong>
-                    </p>
-                </div>
-            ),
-            component: <FlipbookIllusion onComplete={() => setCanProceed(true)} />,
-            nextLabel: "See the mechanism",
-        },
-        {
-            title: "Mechanism: Predicting Frames",
-            text: (
-                <div style={{ textAlign: "center" }}>
-                    {/* Placeholder Pipeline Diagram */}
-                    <div style={{ padding: '20px', background: '#F5F1E6', borderRadius: '12px', marginBottom: '16px', border: '2px solid #000', color: '#000' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px' }}>
-                            <div style={{ background: '#3b82f6', color: 'white', padding: '6px', borderRadius: '4px', fontSize: '0.6rem' }}>Text Prompt</div>
-                            <div style={{ fontSize: '1rem' }}>→</div>
-                            <div style={{ flex: 1, display: 'flex', gap: '2px', justifyContent: 'center' }}>
-                                <div style={{ width: 15, height: 20, background: 'white', border: '1px solid #000' }}>F1</div>
-                                <div style={{ width: 15, height: 20, background: 'white', border: '1px solid #000' }}>F2</div>
-                                <div style={{ width: 15, height: 20, background: 'white', border: '1px solid #000' }}>F3</div>
-                            </div>
-                            <div style={{ fontSize: '1rem' }}>→</div>
-                            <div style={{ background: '#22c55e', color: 'white', padding: '6px', borderRadius: '4px', fontSize: '0.6rem' }}>Video</div>
-                        </div>
-                        <div style={{ marginTop: '8px', fontSize: '0.7rem', fontWeight: 'bold' }}>Predict + Refine Frames</div>
-                    </div>
-
-                    <p>
-                        This is why it feels magic, but also unreliable.
-                        <br />
-                        The model is optimizing for <strong>plausible motion</strong>, not physical truth.
+                        Ever feel Video generation AI models feels like magic? It actually builds on top of concepts you already learned so far: image generation, next-word prediction and more! Let’s find out how that magic works.
                     </p>
                 </div>
             ),
             component: null,
-            nextLabel: "The drift problem",
+            nextLabel: "The Studio Analogy",
         },
         {
-            title: "The Hard Part: Consistency",
+            title: "The Motion Production Studio",
             text: (
-                <>
+                <div style={{ textAlign: "center" }}>
                     <p>
-                        Generating one good image is easy. Generating 24 good images per second that <strong>all match each other</strong> is hard.
+                        Think of a video model as a tiny digital studio inside your GPU, with three key employees:
                     </p>
-                    <p style={{ opacity: 0.9 }}>
-                        It’s essentially playing a game of "Telephone" with itself, 24 times a second.
-                    </p>
-                </>
-            ),
-            component: null,
-            nextLabel: "Experience the drift",
-        },
-        {
-            title: "Cognitive Conflict: The Demo That Lies",
-            text: (
-                <p>
-                    A video might look smooth at full speed. But when you slow it down...
-                    <br />
-                    <strong>Can you find where the reality breaks?</strong>
-                </p>
-            ),
-            component: <FrameDriftViewer onComplete={() => setCanProceed(true)} />,
-            nextLabel: "Why does it move like that?",
-        },
-        {
-            title: "Motion Priors (Standard Patterns)",
-            text: (
-                <>
-                    <p>
-                        Models learn "Motion Priors"—shortcuts for how things usually move.
-                    </p>
-                    <ul style={{ textAlign: 'left', paddingLeft: '20px', color: '#4b5563' }}>
-                        <li>Clouds drift right</li>
-                        <li>Water ripples</li>
-                        <li>Cameras pan smoothly</li>
+                    {/* Visual: The 3 Employees */}
+                    <img
+                        src={studioTeamImg}
+                        alt="The Painter, Editor, and Composer"
+                        style={{ width: '100%', borderRadius: '8px', margin: '16px 0', border: '1px solid #e2e8f0' }}
+                    />
+                    <ul style={{ textAlign: 'left', paddingLeft: '20px', color: '#ffffff', lineHeight: '1.6' }}>
+                        <li style={{ marginBottom: '8px' }}>
+                            <strong>The Painter</strong> (Diffusion): Generates the raw visual frames from scratch.
+                        </li>
+                        <li style={{ marginBottom: '8px' }}>
+                            <strong>The Editor</strong> (Transformers): Stitches frames together so they flow logically.
+                        </li>
+                        <li>
+                            <strong>The Composer</strong> (Audio Gen): Syncs the sound effects beat-for-beat.
+                        </li>
                     </ul>
-                    <p style={{ marginTop: 8 }}>
-                        It relies on these shortcuts when it doesn't know what else to do.
-                    </p>
-                </>
-            ),
-            component: null,
-            nextLabel: "Plausible ≠ Accurate",
-        },
-        {
-            title: "“Plausible” Is Not “Accurate”",
-            text: (
-                <div style={{ textAlign: "center" }}>
-                    <p>
-                        Just like a text model can hallucinate a quote, a video model can hallucinate an extra finger or a morphing logo.
-                    </p>
-                    <p style={{ opacity: 0.9 }}>
-                        It’s not "broken." It’s just predicting the next most likely shape.
-                    </p>
                 </div>
             ),
             component: null,
-            nextLabel: "How to fix it: Guardrails",
+            nextLabel: "Meet The Painter",
         },
         {
-            title: "Guardrails Summary",
-            text: (
-                <div style={{ textAlign: "center" }}>
-                    {/* Placeholder Guardrails 4-card Diagram */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '16px' }}>
-                        <div style={{ background: '#fef9c3', padding: '8px', borderRadius: '6px', fontSize: '0.7rem' }}>
-                            <strong>Storyboard</strong><br />Lock Intent
-                        </div>
-                        <div style={{ background: '#dbeafe', padding: '8px', borderRadius: '6px', fontSize: '0.7rem' }}>
-                            <strong>Keyframes</strong><br />Lock Frames
-                        </div>
-                        <div style={{ background: '#f3e8ff', padding: '8px', borderRadius: '6px', fontSize: '0.7rem' }}>
-                            <strong>Reference</strong><br />Lock Identity
-                        </div>
-                        <div style={{ background: '#dcfce7', padding: '8px', borderRadius: '6px', fontSize: '0.7rem' }}>
-                            <strong>Review</strong><br />Protect Trust
-                        </div>
-                    </div>
-                    <p>
-                        Video generation is "guessing next frames." Guardrails work by reducing the <strong>degrees of freedom</strong> for those guesses.
-                    </p>
-                </div>
-            ),
-            component: null,
-            nextLabel: "Guardrail 1: Storyboard",
-        },
-        {
-            title: "Guardrail 1: Storyboard Constraints",
+            title: "The Painter (Latent Diffusion)",
             text: (
                 <p>
-                    Don't just say "make a video." Define the beats.
-                    <br />
-                    <strong>Lock the intent before you generate.</strong>
+                    Just like in Image Generation, the Painter starts with pure static (noise) and hallucinates structure until a clear image emerges.
                 </p>
             ),
-            component: <StoryboardBuilder onComplete={() => setCanProceed(true)} />,
-            nextLabel: "Guardrail 2: Keyframes",
+            component: <LatentPainterDemo onComplete={() => setCanProceed(true)} />,
+            nextLabel: "Meet The Editor",
         },
         {
-            title: "Guardrail 2: Keyframes",
+            title: "The Editor (Temporal Consistency)",
             text: (
                 <>
                     <p>
-                        Keyframes are anchors. You provide the Start and End images.
+                        <strong>Transformers</strong>, the mechanism that powers next-word prediction is great at processing sequences of data.
                     </p>
-                    <p style={{ opacity: 0.9 }}>
-                        The model just has to fill the middle, rather than inventing the whole journey.
+                    <p>
+                        In video, instead of words, they connect <strong>frames and time</strong>. Just like an Editor, they ensure the movie flows logically so objects don't teleport or vanish.
                     </p>
                 </>
+            ),
+            component: <TransformerConnect onComplete={() => setCanProceed(true)} />,
+            nextLabel: "Meet The Composer",
+        },
+        {
+            title: "The Composer (Audio Generation)",
+            text: (
+                <>
+                    <p>
+                        In newer models (like Veo), sound isn't added later.
+                    </p>
+                    <p>
+                        The model generates the video and audio <strong>together</strong>, ensuring the *thud* happens exactly when the ball hits.
+                    </p>
+                </>
+            ),
+            component: <AudioSyncToggle onComplete={() => setCanProceed(true)} />,
+            nextLabel: "But do they know physics?",
+        },
+        {
+            title: "Question: Understanding Physics",
+            text: (
+                <p>
+                    These models make things bounce and fall. But do they honestly know why it falls?
+                </p>
+            ),
+            component: <PhysicsTraining onComplete={() => setCanProceed(true)} />,
+            nextLabel: "Reveal the truth",
+        },
+        {
+            title: "The Answer: Statistical Correlation",
+            text: (
+                <div style={{ textAlign: "center" }}>
+
+                    {/* Visual: Correlation vs Causation */}
+                    <img
+                        src={correlationImg}
+                        alt="Correlation vs Causation"
+                        style={{ width: '100%', borderRadius: '8px', margin: '16px 0', border: '1px solid #e2e8f0' }}
+                    />
+                    <p>
+                        If the model sees a glass shatter 10,000 times, it learns "Impact + Glass = Shards."
+                    </p>
+                    <p style={{ opacity: 0.9 }}>
+                        It doesn't know <em>why</em>. It just knows the pattern based on it's training data.
+                    </p>
+                </div>
+            ),
+            component: null, // Results shown in previous step effectively, but this reinforces
+            nextLabel: "Why it fails",
+        },
+        {
+            title: "The Result: Pixel Parrots",
+            text: (
+                <div style={{ textAlign: "center" }}>
+                    {/* Visual: Pixel Parrot */}
+                    <img
+                        src={pixelParrotImg}
+                        alt="Pixel Parrot Glitch"
+                        style={{ width: '100%', borderRadius: '8px', margin: '16px 0', border: '1px solid #e2e8f0' }}
+                    />
+                    <p>
+                        Despite their beauty, these models are "Pixel Parrots."
+                    </p>
+                    <p>
+                        They repeat patterns of motion without understanding the causality. That's why hands morph and objects float.
+                    </p>
+                </div>
+            ),
+            component: null,
+            nextLabel: "How to fix it",
+        },
+        {
+            title: "Guardrail 1: Keyframes",
+            text: (
+                <p>
+                    Since the model is just guessing the path, you can guide it by pinning the destination.
+                    <br />
+                    <strong>Provide Keyframes to lock the start and end.</strong>
+                </p>
             ),
             component: <KeyframeAnchorDemo onComplete={() => setCanProceed(true)} />,
-            nextLabel: "Guardrail 3: References",
+            nextLabel: "Guardrail 2: References",
         },
         {
-            title: "Guardrail 3: Reference Lock",
+            title: "Guardrail 2: Reference Assets",
             text: (
                 <p>
-                    If the brand matters, you can't rely on text prompts.
+                    To stop the "Painter" from improvising your logo, give it a ground truth.
                     <br />
-                    <strong>Upload the assets acting as "ground truth."</strong>
+                    <strong>Upload reference assets as constraints.</strong>
                 </p>
             ),
             component: <ReferencePackPicker onComplete={() => setCanProceed(true)} />,
-            nextLabel: "Guardrail 4: Human Review",
+            nextLabel: "The Taylor Swift Experience",
         },
         {
-            title: "Guardrail 4: Human Review",
+            title: "Activity: SwiftMerch Campaign",
             text: (
                 <p>
-                    Video feels "real," so the cost of a mistake is high.
-                    <br />
-                    <strong>Use a checklist to catch the subtle lies.</strong>
+                    Our firm, <strong>SwiftMerch</strong>, wants to let fans generate a video of themselves hanging out with Taylor Swift while wearing the new tour T-shirt.
+                    <br /><br />
+                    Please select the must have Reference Assets needed to make this work.
                 </p>
             ),
-            component: <VideoReviewChecklist onComplete={() => setCanProceed(true)} />,
-            nextLabel: "Simulation Time",
+            component: <SwiftMerchActivity onComplete={() => setCanProceed(true)} />,
+            nextLabel: "Review Logic",
         },
+
         {
-            title: "Scenario Simulation: “Can We Use This?”",
+            title: "Recap: The Motion Studio",
             text: (
-                <p>
-                    You have a 6-second video. It looks cool.
-                    <br />
-                    <strong>Do you ship it?</strong>
-                </p>
+                <div style={{ textAlign: "center" }}>
+                    <p style={{ marginBottom: 16 }}>
+                        Video generation is a collaboration between:
+                    </p>
+                    {/* Visual: Director Chair Structure */}
+                    <img
+                        src={recapImg}
+                        alt="You are the Director"
+                        style={{ width: '100%', borderRadius: '8px', margin: '0 0 24px 0', border: '1px solid #e2e8f0' }}
+                    />
+                    <ul style={{ textAlign: 'left', paddingLeft: '20px', color: '#4b5563', marginBottom: 24 }}>
+                        <li style={{ marginBottom: 8 }}><strong>The Painter:</strong> Creates the pixels (Diffusion)</li>
+                        <li style={{ marginBottom: 8 }}><strong>The Editor:</strong> Connects time (Transformers)</li>
+                        <li style={{ marginBottom: 8 }}><strong>The Composer:</strong> Syncs audio (Lockstep generation)</li>
+                    </ul>
+                    <p>
+                        And you are the <strong>Director</strong>. Use Keyframes and References to keep them all in sync.
+                    </p>
+                </div>
             ),
-            component: <StrategySimulation scenario={videoLaunchScenario} onComplete={() => setCanProceed(true)} />,
+            component: null,
             nextLabel: "Finish Lesson",
         }
     ];
