@@ -120,9 +120,7 @@ const Lesson3 = ({ onExit }) => {
             title: "Video Generation: The Magic Show",
             text: (
                 <div style={{ textAlign: "center" }}>
-                    <p>
-                        Video generation feels like magic, but it actually builds on top of concepts you already learned:
-                    </p>
+
                     {/* Visual: Image Gen + Next Token = Video */}
                     <img
                         src={videoMagicImg}

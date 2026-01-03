@@ -26,6 +26,14 @@ const LandingPage = ({ onSelectModule }) => {
             duration: "10 min",
             color: "#8b5cf6",
             locked: false
+        },
+        {
+            id: 'insight',
+            title: "The Big Idea: Plausibility vs Understanding",
+            desc: "Why confident AI makes mistakes, and how to spot them.",
+            duration: "10 min",
+            color: "#f59e0b", // Amber for 'Insight/Warning'
+            locked: false
         }
     ];
 
