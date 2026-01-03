@@ -13,6 +13,7 @@ import KeyframeAnchorDemo from '../components/Interactives/KeyframeAnchorDemo';
 import ReferencePackPicker from '../components/Interactives/ReferencePackPicker';
 import StrategySimulation from '../components/Interactives/StrategySimulation';
 import SwiftMerchActivity from '../components/Interactives/SwiftMerchActivity';
+import GoalSetter from '../components/GoalSetter/GoalSetter';
 
 // Icons
 import { Film, Palette, Scissors, Music, Brain, Shield, Shirt, User, FileText, Star } from 'lucide-react';
@@ -25,8 +26,94 @@ import pixelParrotImg from '../assets/lesson3/pixel_parrot.png';
 import recapImg from '../assets/lesson3/director_chair_recap.png';
 
 const Lesson3 = ({ onExit }) => {
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(-1);
     const [canProceed, setCanProceed] = useState(true);
+    const [userGoal, setUserGoal] = useState('default');
+
+    const scenarioContent = {
+        default: {
+            title: "Activity: SwiftMerch Campaign",
+            text: (
+                <p>
+                    Our firm, <strong>SwiftMerch</strong>, wants to let fans generate a video of themselves hanging out with Taylor Swift while wearing the new tour T-shirt.
+                    <br /><br />
+                    Select the Reference Assets needed to balance accuracy and personalization:
+                </p>
+            ),
+            nextLabel: "Review Logic",
+            activityProps: {
+                title: "The Taylor Swift Experience",
+                goalText: "Goal: Personalized video of Customer + Taylor + Product.",
+                options: [
+                    { id: 'product', label: 'Product Shot', type: 'object', required: true },
+                    { id: 'celebrity', label: 'Celebrity Ref', type: 'subject', required: true },
+                    { id: 'selfie', label: 'User Selfie', type: 'user', required: true },
+                    { id: 'logo', label: 'Brand Logo', type: 'branding', required: false, error: "Branding is important, but for the VIDEO generation itself, we need to focus on the visual subjects first." },
+                    { id: 'style', label: 'Cinematic Style', type: 'style', required: false, error: "Style is optional. To get the specific LOOK right, we first need the specific OBJECTS and PEOPLE." },
+                    { id: 'script', label: 'Detailed Script', type: 'text', required: false, error: "A script describes action, but reference images are 'Must Haves' to define the identity of the characters." },
+                ],
+                successMsg: "Correct! These are the 3 'Must Have' assets to ground the model for a highly personalized result.",
+                failMsg: "To personalize the video, we need to know exactly WHO (User), WHAT (Product), and WHO WITH (Celebrity)."
+            }
+        },
+        productivity: {
+            title: "Activity: E-Commerce Automator",
+            text: (
+                <p>
+                    You need to generate 10,000 unique product videos for the new catalog. Consistency is impossible if you prompt every video manually.
+                    <br /><br />
+                    Select the Reference Assets to lock in the <strong>Brand Identity</strong> across all videos:
+                </p>
+            ),
+            nextLabel: "Review Pipeline",
+            activityProps: {
+                title: "The 10,000 Video Pipeline",
+                goalText: "Goal: Automate product videos that all look like the same brand.",
+                options: [
+                    { id: 'catalog', label: 'Product Catalog', type: 'object', required: true },
+                    { id: 'brandguide', label: 'Brand Style Guide', type: 'style', required: true },
+                    { id: 'template', label: 'Motion Template', type: 'structure', required: true },
+                    { id: 'meme', label: 'Viral Meme', type: 'concept', required: false, error: "Memes are unpredictable. For a catalog, we need strict brand adherence, not random humor." },
+                    { id: 'competitor', label: 'Competitor Ad', type: 'ref', required: false, error: "Using a competitor's ad might copy their style too closely. Use our own Style Guide." },
+                    { id: 'copy', label: 'Marketing Copy', type: 'text', required: false, error: "Text copy is for the voiceover or captions, not the visual generation references." },
+                ],
+                successMsg: "Perfect! Product (Subject), Style Guide (Look), and Template (Structure) ensure consistency at scale.",
+                failMsg: "To automate 10k videos, you need to lock the Product, the Look, and the Structure."
+            }
+        },
+        shipping: {
+            title: "Activity: SwiftMerch Campaign",
+            text: (
+                <p>
+                    Our firm, <strong>SwiftMerch</strong>, wants to let fans generate a video of themselves hanging out with Taylor Swift while wearing the new tour T-shirt.
+                    <br /><br />
+                    Select the Reference Assets needed to balance accuracy and personalization:
+                </p>
+            ),
+            nextLabel: "Review Logic",
+            activityProps: {
+                title: "The Taylor Swift Experience",
+                goalText: "Goal: Personalized video of Customer + Taylor + Product.",
+                options: [
+                    { id: 'product', label: 'Product Shot', type: 'object', required: true },
+                    { id: 'celebrity', label: 'Celebrity Ref', type: 'subject', required: true },
+                    { id: 'selfie', label: 'User Selfie', type: 'user', required: true },
+                    { id: 'logo', label: 'Brand Logo', type: 'branding', required: false, error: "Branding is important, but for the VIDEO generation itself, we need to focus on the visual subjects first." },
+                    { id: 'style', label: 'Cinematic Style', type: 'style', required: false, error: "Style is optional. To get the specific LOOK right, we first need the specific OBJECTS and PEOPLE." },
+                    { id: 'script', label: 'Detailed Script', type: 'text', required: false, error: "A script describes action, but reference images are 'Must Haves' to define the identity of the characters." },
+                ],
+                successMsg: "Correct! These are the 3 'Must Have' assets to ground the model for a highly personalized result.",
+                failMsg: "To personalize the video, we need to know exactly WHO (User), WHAT (Product), and WHO WITH (Celebrity)."
+            }
+        }
+    };
+
+    const handleGoalSet = (goalType) => {
+        setUserGoal(goalType);
+        setCurrentPage(0);
+    };
+
+    const currentScenario = scenarioContent[userGoal] || scenarioContent.default;
 
     const pages = [
         {
@@ -197,16 +284,13 @@ const Lesson3 = ({ onExit }) => {
             nextLabel: "The Taylor Swift Experience",
         },
         {
-            title: "Activity: SwiftMerch Campaign",
-            text: (
-                <p>
-                    Our firm, <strong>SwiftMerch</strong>, wants to let fans generate a video of themselves hanging out with Taylor Swift while wearing the new tour T-shirt.
-                    <br /><br />
-                    Please select the must have Reference Assets needed to make this work.
-                </p>
-            ),
-            component: <SwiftMerchActivity onComplete={() => setCanProceed(true)} />,
-            nextLabel: "Review Logic",
+            title: currentScenario.title,
+            text: currentScenario.text,
+            component: <SwiftMerchActivity
+                onComplete={() => setCanProceed(true)}
+                scenario={currentScenario.activityProps}
+            />,
+            nextLabel: currentScenario.nextLabel,
         },
 
         {
@@ -252,6 +336,10 @@ const Lesson3 = ({ onExit }) => {
             onExit();
         }
     };
+
+    if (currentPage === -1) {
+        return <GoalSetter onGoalSet={handleGoalSet} />;
+    }
 
     const currentContent = pages[currentPage];
     const progress = ((currentPage + 1) / pages.length) * 100;

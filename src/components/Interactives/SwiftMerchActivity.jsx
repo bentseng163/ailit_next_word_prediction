@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Shirt, User, Star, Type, Film, FileText, Check, AlertCircle } from 'lucide-react';
+import { Shirt, User, Star, Type, Film, FileText, Check, AlertCircle, Box, Layout, Camera, Lock, VolumeX, Meh, FileWarning } from 'lucide-react';
 
-const SwiftMerchActivity = ({ onComplete }) => {
-    const [selected, setSelected] = useState([]);
-    const [showFeedback, setShowFeedback] = useState(false);
-    const [isCorrect, setIsCorrect] = useState(false);
-
-    const options = [
+const SwiftMerchActivity = ({ onComplete, scenario }) => {
+    // Fallback options if no scenario provided (backward compatibility)
+    const defaultOptions = [
         { id: 'product', label: 'Product Shot', icon: Shirt, required: true },
         { id: 'celebrity', label: 'Celebrity Ref', icon: Star, required: true },
         { id: 'selfie', label: 'User Selfie', icon: User, required: true },
@@ -14,6 +11,42 @@ const SwiftMerchActivity = ({ onComplete }) => {
         { id: 'style', label: 'Cinematic Style', icon: Film, required: false, error: "Style is optional. To get the specific LOOK right, we first need the specific OBJECTS and PEOPLE." },
         { id: 'script', label: 'Detailed Script', icon: FileText, required: false, error: "A script describes action, but reference images are 'Must Haves' to define the identity of the characters." },
     ];
+
+    const currentOptions = scenario?.options || defaultOptions;
+
+    // Map types to icons dynamically if needed
+    const getIcon = (item) => {
+        if (item.icon) return item.icon; // Use specific icon if provided
+
+        // Dynamic mapping based on 'type' or 'id'
+        const map = {
+            'object': Shirt,
+            'subject': Star,
+            'user': User,
+            'branding': Type,
+            'style': Film,
+            'text': FileText,
+            'structure': Layout,
+            'concept': Meh,
+            'ref': Box,
+            'context': Camera,
+            'security': Lock,
+            'data': FileWarning,
+            'audio': VolumeX
+        };
+        return map[item.type] || Box;
+    };
+
+    const [selected, setSelected] = useState([]);
+    const [showFeedback, setShowFeedback] = useState(false);
+    const [isCorrect, setIsCorrect] = useState(false);
+
+    // Reset state when scenario changes
+    useEffect(() => {
+        setSelected([]);
+        setShowFeedback(false);
+        setIsCorrect(false);
+    }, [scenario]);
 
     const toggleSelection = (id) => {
         if (isCorrect) return;
@@ -26,7 +59,7 @@ const SwiftMerchActivity = ({ onComplete }) => {
     };
 
     const checkAnswer = () => {
-        const requiredIds = options.filter(o => o.required).map(o => o.id);
+        const requiredIds = currentOptions.filter(o => o.required).map(o => o.id);
         const selectedRequired = selected.filter(id => requiredIds.includes(id));
         const selectedIncorrect = selected.filter(id => !requiredIds.includes(id));
 
@@ -41,21 +74,21 @@ const SwiftMerchActivity = ({ onComplete }) => {
     };
 
     const getFeedbackMessage = () => {
-        const requiredIds = options.filter(o => o.required).map(o => o.id);
+        const requiredIds = currentOptions.filter(o => o.required).map(o => o.id);
         const selectedIncorrect = selected.filter(id => !requiredIds.includes(id));
 
         if (selectedIncorrect.length > 0) {
             // Priority: Show feedback for the first incorrect item selected
-            const firstIncorrect = options.find(o => o.id === selectedIncorrect[0]);
-            return { type: 'error', text: firstIncorrect.error };
+            const firstIncorrect = currentOptions.find(o => o.id === selectedIncorrect[0]);
+            return { type: 'error', text: firstIncorrect.error || "Incorrect selection." };
         }
 
         const missing = requiredIds.filter(id => !selected.includes(id));
         if (missing.length > 0) {
-            return { type: 'error', text: "To personalize the video, we need to know exactly WHO (User), WHAT (Product), and WHO WITH (Celebrity)." };
+            return { type: 'error', text: scenario?.failMsg || "To personalize the video, we need to know exactly WHO (User), WHAT (Product), and WHO WITH (Celebrity)." };
         }
 
-        return { type: 'success', text: "Correct! These are the 3 'Must Have' assets to ground the model for a highly personalized result." };
+        return { type: 'success', text: scenario?.successMsg || "Correct! These are the 3 'Must Have' assets to ground the model for a highly personalized result." };
     };
 
     const feedbackMsg = showFeedback ? getFeedbackMessage() : null;
@@ -75,16 +108,16 @@ const SwiftMerchActivity = ({ onComplete }) => {
                     fontSize: '1.1rem',
                     fontWeight: '600'
                 }}>
-                    The Taylor Swift Experience
+                    {scenario?.title || "The Taylor Swift Experience"}
                 </h3>
-                {/* <p style={{
+                <p style={{
                     color: '#94a3b8',
                     margin: 0,
                     fontSize: '0.9rem',
                     lineHeight: '1.4'
                 }}>
-                    Goal: Personalized video of Customer + Taylor + Product. Pick the right inputs.
-                </p> */}
+                    {scenario?.goalText || "Goal: Personalized video of Customer + Taylor + Product. Pick the right inputs."}
+                </p>
             </div>
 
             <div style={{
@@ -93,9 +126,9 @@ const SwiftMerchActivity = ({ onComplete }) => {
                 gap: '12px',
                 marginBottom: '24px'
             }}>
-                {options.map((option) => {
+                {currentOptions.map((option) => {
                     const isSelected = selected.includes(option.id);
-                    const Icon = option.icon;
+                    const Icon = getIcon(option);
                     return (
                         <button
                             key={option.id}
