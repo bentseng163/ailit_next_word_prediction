@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import Layout from '../components/Layout/Layout';
-import InteractiveCard from '../components/InteractiveCard/InteractiveCard';
+import Layout from '../../components/Layout/Layout';
+import InteractiveCard from '../../components/InteractiveCard/InteractiveCard';
 
 // Components
-import LyricsCompleter from '../components/Interactives/LyricsCompleter';
-import PredictionVisualizer from '../components/Interactives/PredictionVisualizer';
-import ProbabilityGraph from '../components/Interactives/ProbabilityGraph';
-import AmbiguityScenario from '../components/Interactives/AmbiguityScenario';
-import HallucinationSpotter from '../components/Interactives/HallucinationSpotter';
-import StrategySimulation from '../components/Interactives/StrategySimulation';
-import RAGProbabilityShift from '../components/Interactives/RAGProbabilityShift';
-import RAGSnippetPicker from '../components/Interactives/RAGSnippetPicker';
-import FewShotSteerer from '../components/Interactives/FewShotSteerer';
-import FewShotPromptFixer from '../components/Interactives/FewShotPromptFixer';
-import AccuracyCheck from '../components/Interactives/AccuracyCheck';
-import GoalSetter from '../components/GoalSetter/GoalSetter';
+import LyricsCompleter from '../../components/Interactives/LyricsCompleter';
+import PredictionVisualizer from '../../components/Interactives/PredictionVisualizer';
+import ProbabilityGraph from '../../components/Interactives/ProbabilityGraph';
+import AmbiguityScenario from '../../components/Interactives/AmbiguityScenario';
+import HallucinationSpotter from '../../components/Interactives/HallucinationSpotter';
+import StrategySimulation from '../../components/Interactives/StrategySimulation';
+import RAGProbabilityShift from '../../components/Interactives/RAGProbabilityShift';
+import RAGSnippetPicker from '../../components/Interactives/RAGSnippetPicker';
+import FewShotSteerer from '../../components/Interactives/FewShotSteerer';
+import FewShotPromptFixer from '../../components/Interactives/FewShotPromptFixer';
+import AccuracyCheck from '../../components/Interactives/AccuracyCheck';
+import GoalSetter from '../../components/GoalSetter/GoalSetter';
 
 // Icons for Strategy Simulation
 import { ClipboardList, FolderSearch, Layers, ShieldCheck } from 'lucide-react';

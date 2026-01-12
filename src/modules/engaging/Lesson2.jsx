@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import Layout from '../components/Layout/Layout';
-import InteractiveCard from '../components/InteractiveCard/InteractiveCard';
+import Layout from '../../components/Layout/Layout';
+import InteractiveCard from '../../components/InteractiveCard/InteractiveCard';
 
 // Interactives
-import NoiseToImageScrubber from '../components/Interactives/NoiseToImageScrubber';
-import PromptClarityMeter from '../components/Interactives/PromptClarityMeter';
-import PromptSurgery from '../components/Interactives/PromptSurgery';
-import VariationKnob from '../components/Interactives/VariationKnob';
-import PipelineBuilder from '../components/Interactives/PipelineBuilder';
-import PromptDebugger from '../components/Interactives/PromptDebugger';
-import PromptTemplateMaker from '../components/Interactives/PromptTemplateMaker';
-import GoalSetter from '../components/GoalSetter/GoalSetter';
+import NoiseToImageScrubber from '../../components/Interactives/NoiseToImageScrubber';
+import PromptClarityMeter from '../../components/Interactives/PromptClarityMeter';
+import PromptSurgery from '../../components/Interactives/PromptSurgery';
+import VariationKnob from '../../components/Interactives/VariationKnob';
+import PipelineBuilder from '../../components/Interactives/PipelineBuilder';
+import PromptDebugger from '../../components/Interactives/PromptDebugger';
+import PromptTemplateMaker from '../../components/Interactives/PromptTemplateMaker';
+import GoalSetter from '../../components/GoalSetter/GoalSetter';
 
 // Assets (Nano Banana Generations)
-import imgRemote from '../assets/imggen-01-remote.png';
-import imgTags from '../assets/imggen-02-tags.png';
+import imgRemote from '../../assets/imggen-01-remote.png';
+import imgTags from '../../assets/imggen-02-tags.png';
 
 const Lesson2 = ({ onExit }) => {
     const [currentPage, setCurrentPage] = useState(-1); // Start at -1 for GoalSetter

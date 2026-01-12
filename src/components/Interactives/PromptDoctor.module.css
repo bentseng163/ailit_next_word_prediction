@@ -1,0 +1,241 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.patientCard {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(249, 115, 22, 0.1));
+    border: 2px dashed rgba(239, 68, 68, 0.4);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+}
+
+.patientLabel {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ef4444;
+    margin-bottom: 8px;
+}
+
+.patientText {
+    font-size: 16px;
+    font-style: italic;
+    color: var(--color-text-primary);
+    margin-bottom: 8px;
+}
+
+.diagnosis {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+}
+
+.chipPool {
+    background: var(--color-bg-card);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.poolLabel {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin-bottom: 10px;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chipWrapper {
+    position: relative;
+}
+
+.chip {
+    background: var(--color-bg-main);
+    border: 1px solid var(--color-bg-card-highlight);
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 12px;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.chip:hover {
+    border-color: var(--color-accent-primary);
+}
+
+.binPicker {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 4px;
+    display: flex;
+    gap: 4px;
+    background: var(--color-bg-card);
+    padding: 6px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.binOption {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    color: white;
+}
+
+.binsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.bin {
+    background: var(--color-bg-card);
+    border: 2px solid;
+    border-radius: 12px;
+    padding: 12px;
+    min-height: 80px;
+}
+
+.binLabel {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.binChips {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.placedChip {
+    font-size: 11px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.removeX {
+    font-size: 14px;
+    font-weight: bold;
+    opacity: 0.6;
+    margin-left: 6px;
+}
+
+.generateBtn {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.resultsPanel {
+    background: var(--color-bg-card);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.scoreRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.scoreLabel {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.scoreValue {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.feedbackList {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.feedbackItem {
+    font-size: 12px;
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.comparison {
+    margin-top: 8px;
+}
+
+.beforeAfter {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.beforeCard,
+.afterCard {
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.beforeCard {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.afterCard {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.baLabel {
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.beforeCard .baLabel {
+    color: #ef4444;
+}
+
+.afterCard .baLabel {
+    color: #10b981;
+}
+
+.insightBox {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 13px;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+}

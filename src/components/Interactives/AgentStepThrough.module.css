@@ -1,0 +1,196 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.progress {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+.progressBar {
+    height: 4px;
+    background: var(--color-bg-card);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: var(--color-accent-primary);
+    border-radius: 2px;
+}
+
+.stepCard {
+    background: var(--color-bg-card);
+    border-radius: 12px;
+    padding: 16px;
+    border: 2px solid var(--color-bg-card-highlight);
+    position: relative;
+}
+
+.stepCard.safe {
+    border-color: var(--color-bg-card-highlight);
+}
+
+.stepCard.medium {
+    border-color: rgba(245, 158, 11, 0.5);
+    background: rgba(245, 158, 11, 0.05);
+}
+
+.stepCard.high {
+    border-color: rgba(239, 68, 68, 0.5);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.stepAction {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.stepStatus {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}
+
+.riskBadge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.stepCard.high .riskBadge {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.decisions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.decisionBtn {
+    background: var(--color-bg-card);
+    border: 2px solid var(--color-bg-card-highlight);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+}
+
+.decisionBtn:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.askBtn {
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.askBtn:hover {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.stopBtn {
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.stopBtn:hover {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.feedback {
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.feedbackGood {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: var(--color-text-primary);
+}
+
+.feedbackBad {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--color-text-primary);
+}
+
+.resultsPanel {
+    background: var(--color-bg-card);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.scoreRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.score {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.decisionReview {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.reviewTitle {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+}
+
+.reviewItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.reviewCorrect {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.reviewWrong {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.insight {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+}

@@ -1,0 +1,204 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contextCard {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.contextLabel {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #3b82f6;
+    margin-bottom: 8px;
+}
+
+.contextText {
+    font-size: 14px;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+    margin: 0 0 8px 0;
+}
+
+.contextQuestion {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.promptGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.promptCard {
+    background: var(--color-bg-card);
+    border: 2px solid var(--color-bg-card-highlight);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+}
+
+.promptCard:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.promptCard.selected {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.promptCard.correct {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.promptCard.wrong {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.promptText {
+    font-size: 13px;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.2);
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.submitBtn {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.resultsPanel {
+    background: var(--color-bg-card);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.meters {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.meter {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.meterHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.meterLabel {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+}
+
+.meterValue {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.meterTrack {
+    height: 8px;
+    background: var(--color-bg-main);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.meterFill {
+    height: 100%;
+    border-radius: 4px;
+}
+
+.feedbackBox {
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.feedbackBox p {
+    margin: 0;
+}
+
+.feedbackCorrect {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: var(--color-text-primary);
+}
+
+.feedbackWrong {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: var(--color-text-primary);
+}
+
+.fixBox {
+    background: var(--color-bg-main);
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.fixLabel {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+}
+
+.fixList {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 13px;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+}
+
+.insightBox {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 13px;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+}

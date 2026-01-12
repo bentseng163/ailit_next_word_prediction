@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
-import Layout from '../components/Layout/Layout';
-import InteractiveCard from '../components/InteractiveCard/InteractiveCard';
+import Layout from '../../components/Layout/Layout';
+import InteractiveCard from '../../components/InteractiveCard/InteractiveCard';
 
 // New Interactives
-import LatentPainterDemo from '../components/Interactives/LatentPainterDemo';
-import TransformerConnect from '../components/Interactives/TransformerConnect';
-import AudioSyncToggle from '../components/Interactives/AudioSyncToggle';
-import PhysicsTraining from '../components/Interactives/PhysicsTraining';
+import LatentPainterDemo from '../../components/Interactives/LatentPainterDemo';
+import TransformerConnect from '../../components/Interactives/TransformerConnect';
+import AudioSyncToggle from '../../components/Interactives/AudioSyncToggle';
+import PhysicsTraining from '../../components/Interactives/PhysicsTraining';
 
 // Reused Inteactives
-import KeyframeAnchorDemo from '../components/Interactives/KeyframeAnchorDemo';
-import ReferencePackPicker from '../components/Interactives/ReferencePackPicker';
-import StrategySimulation from '../components/Interactives/StrategySimulation';
-import SwiftMerchActivity from '../components/Interactives/SwiftMerchActivity';
-import GoalSetter from '../components/GoalSetter/GoalSetter';
+import KeyframeAnchorDemo from '../../components/Interactives/KeyframeAnchorDemo';
+import ReferencePackPicker from '../../components/Interactives/ReferencePackPicker';
+import StrategySimulation from '../../components/Interactives/StrategySimulation';
+import SwiftMerchActivity from '../../components/Interactives/SwiftMerchActivity';
+import GoalSetter from '../../components/GoalSetter/GoalSetter';
 
 // Icons
 import { Film, Palette, Scissors, Music, Brain, Shield, Shirt, User, FileText, Star } from 'lucide-react';
 
 // Conceptual Images
-import videoMagicImg from '../assets/lesson3/video_magic_formula.png';
-import studioTeamImg from '../assets/lesson3/motion_studio_team.png';
-import correlationImg from '../assets/lesson3/correlation_vs_causation.png';
-import pixelParrotImg from '../assets/lesson3/pixel_parrot.png';
-import recapImg from '../assets/lesson3/director_chair_recap.png';
+import videoMagicImg from '../../assets/lesson3/video_magic_formula.png';
+import studioTeamImg from '../../assets/lesson3/motion_studio_team.png';
+import correlationImg from '../../assets/lesson3/correlation_vs_causation.png';
+import pixelParrotImg from '../../assets/lesson3/pixel_parrot.png';
+import recapImg from '../../assets/lesson3/director_chair_recap.png';
 
 const Lesson3 = ({ onExit }) => {
     const [currentPage, setCurrentPage] = useState(-1);

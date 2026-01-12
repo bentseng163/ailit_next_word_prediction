@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Layout from '../components/Layout/Layout';
-import InteractiveCard from '../components/InteractiveCard/InteractiveCard';
+import Layout from '../../components/Layout/Layout';
+import InteractiveCard from '../../components/InteractiveCard/InteractiveCard';
 
 // Refactored Interactives
-import RecapTextInsight from '../components/Interactives/RecapTextInsight';
-import RecapImageInsight from '../components/Interactives/RecapImageInsight';
-import RecapVideoInsight from '../components/Interactives/RecapVideoInsight';
-import LaunchCrisisActivity from '../components/Interactives/LaunchCrisisActivity';
+import RecapTextInsight from '../../components/Interactives/RecapTextInsight';
+import RecapImageInsight from '../../components/Interactives/RecapImageInsight';
+import RecapVideoInsight from '../../components/Interactives/RecapVideoInsight';
+import LaunchCrisisActivity from '../../components/Interactives/LaunchCrisisActivity';
 
 // Icons for placeholders
 import { Brain, Eye, Layers, ShieldCheck, AlertTriangle } from 'lucide-react';
