@@ -1,87 +1,138 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import styles from './ContextOptimizer.module.css';
 
 /*
- * INTERACTIVE SPEC: Context Window Optimizer
+ * INTERACTIVE SPEC: Context Window Optimizer (Drag & Drop)
  * 
- * Goal: Drag and drop resources into context window to optimize performance
- * Learner should aim for 98%+ accuracy with 3-4 resources (sweet spot)
+ * Goal: Drag resources into the context window to optimize accuracy
+ * Optimal: Category Definitions + Example Tickets + Past Classifications (exactly 3)
+ * 
+ * Color coding:
+ *   - 1-3 items: Green (optimal zone)
+ *   - 4-5 items: Yellow (warning - context rot starting)
+ *   - 6 items: Red (too much context)
+ * 
+ * Accuracy:
+ *   - 100% with exactly the 3 essential resources
+ *   - Decreases if missing any essential OR adding non-essential (context rot)
  */
 
 const ContextOptimizer = ({ onComplete }) => {
-    const [selectedResources, setSelectedResources] = useState([]);
+    const [contextWindow, setContextWindow] = useState([]);
+    const [draggedItem, setDraggedItem] = useState(null);
     const [showResults, setShowResults] = useState(false);
 
     const scenario = {
         title: "AI Customer Support Ticket Tagger",
-        description: "Categorize incoming tickets into Bug, Feature, Billing, or General.",
-        maxOptimal: 4
+        description: "Categorize incoming tickets into Bug, Feature, Billing, or General."
     };
 
     const resources = [
-        { id: 'categories', name: 'Category Definitions', icon: '📋', impact: 35, essential: true },
-        { id: 'examples', name: 'Example Tickets (10)', icon: '📝', impact: 30, essential: true },
-        { id: 'history', name: 'Past Classifications', icon: '📊', impact: 20, essential: true },
-        { id: 'product', name: 'Product Documentation', icon: '📖', impact: 10, essential: false },
-        { id: 'team', name: 'Team Bios', icon: '👥', impact: -5, essential: false },
-        { id: 'branding', name: 'Brand Guidelines', icon: '🎨', impact: -8, essential: false }
+        { id: 'categories', name: 'Category Definitions', icon: '📋', essential: true },
+        { id: 'examples', name: 'Example Tickets (10)', icon: '📝', essential: true },
+        { id: 'history', name: 'Past Classifications', icon: '📊', essential: true },
+        { id: 'product', name: 'Product Documentation', icon: '📖', essential: false },
+        { id: 'team', name: 'Team Bios', icon: '👥', essential: false },
+        { id: 'branding', name: 'Brand Guidelines', icon: '🎨', essential: false }
     ];
 
-    const toggleResource = (resourceId) => {
-        if (showResults) return;
+    const essentialIds = ['categories', 'examples', 'history'];
 
-        if (selectedResources.includes(resourceId)) {
-            setSelectedResources(selectedResources.filter(id => id !== resourceId));
-        } else {
-            setSelectedResources([...selectedResources, resourceId]);
-        }
+    // Drag handlers
+    const handleDragStart = (resourceId) => {
+        if (showResults) return;
+        setDraggedItem(resourceId);
     };
 
+    const handleDragEnd = () => {
+        setDraggedItem(null);
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        if (showResults || !draggedItem) return;
+
+        if (!contextWindow.includes(draggedItem)) {
+            setContextWindow([...contextWindow, draggedItem]);
+        }
+        setDraggedItem(null);
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+    };
+
+    const removeFromContext = (resourceId) => {
+        if (showResults) return;
+        setContextWindow(contextWindow.filter(id => id !== resourceId));
+    };
+
+    // Calculate accuracy based on selection
     const calculateAccuracy = () => {
-        let baseAccuracy = 60;
+        const hasAllEssentials = essentialIds.every(id => contextWindow.includes(id));
+        const essentialCount = contextWindow.filter(id => essentialIds.includes(id)).length;
+        const nonEssentialCount = contextWindow.length - essentialCount;
 
-        // Add impact from selected resources
-        resources.forEach(r => {
-            if (selectedResources.includes(r.id)) {
-                baseAccuracy += r.impact;
-            }
-        });
-
-        // Penalty for too many resources (context rot)
-        if (selectedResources.length > 4) {
-            baseAccuracy -= (selectedResources.length - 4) * 5;
+        // Perfect: exactly the 3 essentials
+        if (hasAllEssentials && contextWindow.length === 3) {
+            return 100;
         }
 
-        // Penalty for too few resources
-        if (selectedResources.length < 2) {
-            baseAccuracy -= 10;
-        }
+        // Start from base and adjust
+        let accuracy = 60;
 
-        return Math.min(100, Math.max(40, baseAccuracy));
+        // Add points for each essential
+        accuracy += essentialCount * 12;
+
+        // Penalty for each non-essential (context rot)
+        accuracy -= nonEssentialCount * 8;
+
+        // Extra penalty for missing essentials
+        const missingEssentials = 3 - essentialCount;
+        accuracy -= missingEssentials * 5;
+
+        return Math.min(99, Math.max(45, accuracy));
     };
 
     const handleSubmit = () => {
         setShowResults(true);
-        onComplete && onComplete();
+        const accuracy = calculateAccuracy();
+        if (accuracy === 100) {
+            onComplete && onComplete();
+        }
     };
 
     const accuracy = calculateAccuracy();
-    const isOptimal = accuracy >= 98 && selectedResources.length >= 3 && selectedResources.length <= 4;
+    const isOptimal = accuracy === 100;
+
+    // Context window color based on item count
+    const getWindowColor = () => {
+        if (contextWindow.length <= 3) return '#10b981'; // Green
+        if (contextWindow.length <= 5) return '#f59e0b'; // Yellow
+        return '#ef4444'; // Red
+    };
 
     const getFeedback = () => {
-        if (accuracy >= 98 && selectedResources.length <= 4) {
-            return { type: 'success', message: '🎯 Perfect! You found the optimal context balance.' };
-        } else if (accuracy >= 90) {
-            return { type: 'good', message: '👍 Good! But you can optimize further.' };
-        } else if (selectedResources.length > 4) {
-            return { type: 'warning', message: '⚠️ Too much context! Remember: context rot decreases accuracy.' };
-        } else if (selectedResources.length < 3) {
-            return { type: 'warning', message: '⚠️ Not enough context. The model needs more information.' };
-        } else {
-            return { type: 'error', message: '❌ Missing essential resources. Try adding category definitions or examples.' };
+        if (accuracy === 100) {
+            return { type: 'success', message: '🎯 Perfect! You found the optimal context—maximum signal, minimum noise.' };
         }
+
+        const hasAllEssentials = essentialIds.every(id => contextWindow.includes(id));
+        const nonEssentialCount = contextWindow.filter(id => !essentialIds.includes(id)).length;
+
+        if (!hasAllEssentials) {
+            return { type: 'warning', message: '⚠️ Missing essential resources. The model needs category definitions, examples, and past classifications.' };
+        }
+
+        if (nonEssentialCount > 0) {
+            return { type: 'warning', message: '⚠️ Context rot! Extra resources are diluting the model\'s focus. Remove non-essential items.' };
+        }
+
+        return { type: 'error', message: '❌ Try a different combination.' };
     };
+
+    const availableResources = resources.filter(r => !contextWindow.includes(r.id));
 
     return (
         <div className={styles.container}>
@@ -91,45 +142,89 @@ const ContextOptimizer = ({ onComplete }) => {
                 <div className={styles.scenarioDesc}>{scenario.description}</div>
             </div>
 
-            {/* Resources to select */}
+            {/* Available Resources */}
             <div className={styles.resourcesLabel}>
-                Select resources to add to context window:
+                Drag resources into the context window:
             </div>
             <div className={styles.resources}>
-                {resources.map(resource => {
-                    const selected = selectedResources.includes(resource.id);
-                    return (
-                        <motion.button
-                            key={resource.id}
-                            className={`${styles.resource} ${selected ? styles.selected : ''}`}
-                            onClick={() => toggleResource(resource.id)}
-                            whileTap={{ scale: 0.95 }}
-                            disabled={showResults}
-                        >
-                            <span className={styles.resourceIcon}>{resource.icon}</span>
-                            <span className={styles.resourceName}>{resource.name}</span>
-                            {selected && <span className={styles.checkmark}>✓</span>}
-                        </motion.button>
-                    );
-                })}
+                {availableResources.map(resource => (
+                    <motion.div
+                        key={resource.id}
+                        className={styles.resource}
+                        draggable={!showResults}
+                        onDragStart={() => handleDragStart(resource.id)}
+                        onDragEnd={handleDragEnd}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{ cursor: showResults ? 'default' : 'grab' }}
+                    >
+                        <span className={styles.resourceIcon}>{resource.icon}</span>
+                        <span className={styles.resourceName}>{resource.name}</span>
+                    </motion.div>
+                ))}
+                {availableResources.length === 0 && (
+                    <div className={styles.emptyPool}>All resources added</div>
+                )}
             </div>
 
-            {/* Context Window Preview */}
-            <div className={styles.preview}>
-                <div className={styles.previewLabel}>Context Window ({selectedResources.length}/6)</div>
-                <div className={styles.previewBar}>
+            {/* Context Window Drop Zone */}
+            <div
+                className={`${styles.contextWindow} ${draggedItem ? styles.dragOver : ''}`}
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                style={{ borderColor: getWindowColor() }}
+            >
+                <div className={styles.windowHeader}>
+                    <span>Context Window</span>
+                    <span
+                        className={styles.countBadge}
+                        style={{ background: getWindowColor() }}
+                    >
+                        {contextWindow.length}/6
+                    </span>
+                </div>
+                <div className={styles.windowContent}>
+                    <AnimatePresence>
+                        {contextWindow.length === 0 ? (
+                            <div className={styles.dropHint}>
+                                Drop resources here
+                            </div>
+                        ) : (
+                            contextWindow.map(id => {
+                                const resource = resources.find(r => r.id === id);
+                                return (
+                                    <motion.div
+                                        key={id}
+                                        className={styles.contextItem}
+                                        initial={{ scale: 0.8, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        exit={{ scale: 0.8, opacity: 0 }}
+                                        onClick={() => removeFromContext(id)}
+                                        style={{ cursor: showResults ? 'default' : 'pointer' }}
+                                    >
+                                        <span>{resource.icon}</span>
+                                        <span className={styles.contextItemName}>{resource.name}</span>
+                                        {!showResults && <span className={styles.removeBtn}>×</span>}
+                                    </motion.div>
+                                );
+                            })
+                        )}
+                    </AnimatePresence>
+                </div>
+                {/* Fill bar */}
+                <div className={styles.fillBar}>
                     <div
-                        className={styles.previewFill}
+                        className={styles.fillProgress}
                         style={{
-                            width: `${(selectedResources.length / 6) * 100}%`,
-                            background: selectedResources.length > 4 ? '#ef4444' : '#10b981'
+                            width: `${(contextWindow.length / 6) * 100}%`,
+                            background: getWindowColor()
                         }}
                     />
                 </div>
             </div>
 
             {/* Submit */}
-            {selectedResources.length > 0 && !showResults && (
+            {contextWindow.length > 0 && !showResults && (
                 <motion.button
                     className={styles.submitBtn}
                     onClick={handleSubmit}
@@ -151,7 +246,7 @@ const ContextOptimizer = ({ onComplete }) => {
                         <span>Accuracy:</span>
                         <span
                             className={styles.accuracyScore}
-                            style={{ color: accuracy >= 98 ? '#10b981' : accuracy >= 80 ? '#f59e0b' : '#ef4444' }}
+                            style={{ color: accuracy === 100 ? '#10b981' : accuracy >= 80 ? '#f59e0b' : '#ef4444' }}
                         >
                             {accuracy}%
                         </span>
@@ -163,7 +258,7 @@ const ContextOptimizer = ({ onComplete }) => {
                         <button
                             className={styles.retryBtn}
                             onClick={() => {
-                                setSelectedResources([]);
+                                setContextWindow([]);
                                 setShowResults(false);
                             }}
                         >

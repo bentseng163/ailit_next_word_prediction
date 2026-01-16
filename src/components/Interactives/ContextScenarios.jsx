@@ -6,7 +6,12 @@ import styles from './ContextScenarios.module.css';
  * INTERACTIVE SPEC: Context Selection Scenarios
  * 
  * Goal: Given 3 business scenarios, pick optimal context resources
- * Each scenario has 6 options, learner picks 3-4 and gets accuracy feedback
+ * Each scenario has scenario-specific feedback tied to learning objectives
+ * 
+ * UI Updates:
+ * - White text in options for readability
+ * - Submit button always visible but disabled until selection made
+ * - Try Again + Next Challenge buttons when wrong
  */
 
 const ContextScenarios = ({ onComplete }) => {
@@ -27,7 +32,12 @@ const ContextScenarios = ({ onComplete }) => {
                 { id: 'org', name: 'Full Org Chart', icon: '🏢', optimal: false },
                 { id: 'history', name: 'Past Summaries', icon: '📊', optimal: false }
             ],
-            optimalCount: 3
+            optimalIds: ['emails', 'format', 'context'],
+            feedback: {
+                success: "🎯 Perfect! The email thread provides content, the format example defines output structure, and meeting context gives relevance. No noise added.",
+                missing: "⚠️ You're missing key context. For summarization, you need: the source content (emails), an output format example, and relevant meeting context to understand importance.",
+                tooMuch: "⚠️ Context rot alert! Brand voice, org charts, and past summaries add tokens but don't help the model summarize THIS email thread. Less is more."
+            }
         },
         {
             id: 2,
@@ -41,7 +51,12 @@ const ContextScenarios = ({ onComplete }) => {
                 { id: 'bios', name: 'Developer Bios', icon: '👨‍💻', optimal: false },
                 { id: 'roadmap', name: 'Product Roadmap', icon: '🗺️', optimal: false }
             ],
-            optimalCount: 4
+            optimalIds: ['diff', 'style', 'context', 'ticket'],
+            feedback: {
+                success: "🎯 Excellent! Code diff shows changes, style guide sets standards, related files provide context, and the ticket explains intent. All high-signal context.",
+                missing: "⚠️ Missing essential context. Code review needs: the diff, coding standards, file context, and the issue being solved. Each reduces ambiguity.",
+                tooMuch: "⚠️ Developer bios and roadmaps don't help review THIS code. They consume context window space that could hold more relevant file context."
+            }
         },
         {
             id: 3,
@@ -55,7 +70,12 @@ const ContextScenarios = ({ onComplete }) => {
                 { id: 'brand', name: 'Marketing Copy', icon: '📣', optimal: false },
                 { id: 'team', name: 'Sales Rep Notes', icon: '👤', optimal: false }
             ],
-            optimalCount: 4
+            optimalIds: ['usage', 'tickets', 'contract', 'nps'],
+            feedback: {
+                success: "🎯 Perfect! Usage metrics show engagement, support tickets reveal friction, contract details show commitment level, and NPS measures satisfaction. All churn signals.",
+                missing: "⚠️ You're missing churn signals. Effective prediction needs: usage patterns, support history, contract status, and satisfaction scores.",
+                tooMuch: "⚠️ Marketing copy and sales notes don't predict churn behavior—they're noise. Focus on behavioral and satisfaction data that actually signals risk."
+            }
         }
     ];
 
@@ -66,22 +86,42 @@ const ContextScenarios = ({ onComplete }) => {
 
         if (selected.includes(resourceId)) {
             setSelected(selected.filter(id => id !== resourceId));
-        } else if (selected.length < 4) {
+        } else {
             setSelected([...selected, resourceId]);
         }
     };
 
-    const calculateScore = () => {
-        const optimalIds = scenario.resources.filter(r => r.optimal).map(r => r.id);
-        const correctSelections = selected.filter(id => optimalIds.includes(id));
-        const wrongSelections = selected.filter(id => !optimalIds.includes(id));
+    const checkOptimal = () => {
+        const optimalSet = new Set(scenario.optimalIds);
+        const selectedSet = new Set(selected);
 
-        let accuracy = 60 + (correctSelections.length * 10) - (wrongSelections.length * 5);
-        return Math.min(100, Math.max(60, accuracy));
+        // Check if exact match
+        if (optimalSet.size !== selectedSet.size) return false;
+        for (const id of optimalSet) {
+            if (!selectedSet.has(id)) return false;
+        }
+        return true;
+    };
+
+    const getFeedbackType = () => {
+        const isOptimal = checkOptimal();
+        if (isOptimal) return 'success';
+
+        const missingOptimal = scenario.optimalIds.filter(id => !selected.includes(id));
+        const extraSelected = selected.filter(id => !scenario.optimalIds.includes(id));
+
+        if (missingOptimal.length > 0 && extraSelected.length > 0) return 'tooMuch';
+        if (missingOptimal.length > 0) return 'missing';
+        return 'tooMuch';
     };
 
     const handleSubmit = () => {
         setShowFeedback(true);
+    };
+
+    const handleRetry = () => {
+        setSelected([]);
+        setShowFeedback(false);
     };
 
     const handleNext = () => {
@@ -94,7 +134,8 @@ const ContextScenarios = ({ onComplete }) => {
         }
     };
 
-    const accuracy = calculateScore();
+    const isOptimal = checkOptimal();
+    const feedbackType = getFeedbackType();
 
     return (
         <div className={styles.container}>
@@ -117,17 +158,17 @@ const ContextScenarios = ({ onComplete }) => {
 
             {/* Resources */}
             <div className={styles.resourcesLabel}>
-                Select {scenario.optimalCount} resources for optimal accuracy:
+                Select the optimal context resources:
             </div>
             <div className={styles.resources}>
                 {scenario.resources.map(resource => {
                     const isSelected = selected.includes(resource.id);
-                    const isOptimal = resource.optimal;
+                    const isCorrect = scenario.optimalIds.includes(resource.id);
 
                     return (
                         <motion.button
                             key={resource.id}
-                            className={`${styles.resource} ${isSelected ? styles.selected : ''} ${showFeedback && isSelected ? (isOptimal ? styles.correct : styles.wrong) : ''}`}
+                            className={`${styles.resource} ${isSelected ? styles.selected : ''} ${showFeedback && isSelected ? (isCorrect ? styles.correct : styles.wrong) : ''} ${showFeedback && !isSelected && isCorrect ? styles.missed : ''}`}
                             onClick={() => toggleResource(resource.id)}
                             whileTap={{ scale: 0.95 }}
                             disabled={showFeedback}
@@ -140,16 +181,15 @@ const ContextScenarios = ({ onComplete }) => {
                 })}
             </div>
 
-            {/* Submit */}
-            {selected.length >= 2 && !showFeedback && (
-                <motion.button
-                    className={styles.submitBtn}
+            {/* Submit - Always visible, disabled until selection */}
+            {!showFeedback && (
+                <button
+                    className={`${styles.submitBtn} ${selected.length === 0 ? styles.disabled : ''}`}
                     onClick={handleSubmit}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    disabled={selected.length === 0}
                 >
-                    Check Accuracy
-                </motion.button>
+                    Check Selection
+                </button>
             )}
 
             {/* Feedback */}
@@ -160,26 +200,23 @@ const ContextScenarios = ({ onComplete }) => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                     >
-                        <div className={styles.accuracyRow}>
-                            <span>Accuracy:</span>
-                            <span
-                                className={styles.accuracyScore}
-                                style={{ color: accuracy >= 90 ? '#10b981' : accuracy >= 75 ? '#f59e0b' : '#ef4444' }}
-                            >
-                                {accuracy}%
-                            </span>
+                        <div className={`${styles.feedbackText} ${styles[feedbackType]}`}>
+                            {scenario.feedback[feedbackType]}
                         </div>
-                        <div className={styles.feedbackText}>
-                            {accuracy >= 90
-                                ? '✅ Great selection! You picked the most relevant context.'
-                                : accuracy >= 75
-                                    ? '👍 Good, but some resources add noise without value.'
-                                    : '⚠️ Some key context is missing or irrelevant.'
-                            }
+
+                        <div className={styles.buttonRow}>
+                            {!isOptimal && (
+                                <button className={styles.retryBtn} onClick={handleRetry}>
+                                    Try Again
+                                </button>
+                            )}
+                            <button className={styles.nextBtn} onClick={handleNext}>
+                                {currentScenario < scenarios.length - 1
+                                    ? (isOptimal ? 'Next Challenge →' : 'Skip to Next →')
+                                    : 'Complete ✓'
+                                }
+                            </button>
                         </div>
-                        <button className={styles.nextBtn} onClick={handleNext}>
-                            {currentScenario < scenarios.length - 1 ? 'Next Scenario →' : 'Complete ✓'}
-                        </button>
                     </motion.div>
                 )}
             </AnimatePresence>

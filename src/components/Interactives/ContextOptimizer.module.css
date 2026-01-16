@@ -1,7 +1,7 @@
 .container {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
 }
 
 .scenario {
@@ -27,76 +27,139 @@
 }
 
 .resources {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 40px;
 }
 
 .resource {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px;
+    gap: 6px;
+    padding: 8px 10px;
     border: 2px solid var(--color-bg-card-highlight);
     border-radius: 8px;
     background: var(--color-bg-card);
-    cursor: pointer;
+    cursor: grab;
     transition: all 0.15s ease;
-    position: relative;
+    user-select: none;
 }
 
-.resource:hover:not(:disabled) {
+.resource:hover {
     border-color: var(--color-accent-primary);
+    transform: translateY(-1px);
 }
 
-.resource.selected {
-    border-color: #10b981;
-    background: rgba(16, 185, 129, 0.1);
-}
-
-.resource:disabled {
-    opacity: 0.7;
-    cursor: default;
+.resource:active {
+    cursor: grabbing;
 }
 
 .resourceIcon {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .resourceName {
     font-size: 10px;
     font-weight: 600;
-    text-align: left;
-    flex: 1;
 }
 
-.checkmark {
-    color: #10b981;
+.emptyPool {
+    font-size: 11px;
+    opacity: 0.5;
+    font-style: italic;
+    padding: 8px;
+}
+
+/* Context Window */
+.contextWindow {
+    border: 2px dashed var(--color-bg-card-highlight);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.contextWindow.dragOver {
+    border-style: solid;
+    background: rgba(139, 92, 246, 0.05);
+}
+
+.windowHeader {
+    background: var(--color-bg-card);
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.countBadge {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    color: white;
     font-weight: 700;
 }
 
-.preview {
-    background: var(--color-bg-card);
-    border-radius: 8px;
+.windowContent {
     padding: 10px;
+    min-height: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-content: flex-start;
 }
 
-.previewLabel {
-    font-size: 11px;
+.dropHint {
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    opacity: 0.4;
+    padding: 20px 0;
+}
+
+.contextItem {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 6px;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.contextItem:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.contextItemName {
     font-weight: 600;
-    margin-bottom: 6px;
 }
 
-.previewBar {
-    height: 8px;
+.removeBtn {
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 0.5;
+    margin-left: 2px;
+}
+
+.contextItem:hover .removeBtn {
+    opacity: 1;
+    color: #ef4444;
+}
+
+.fillBar {
+    height: 6px;
     background: var(--color-bg-main);
-    border-radius: 4px;
-    overflow: hidden;
 }
 
-.previewFill {
+.fillProgress {
     height: 100%;
-    border-radius: 4px;
     transition: all 0.3s ease;
 }
 
@@ -137,6 +200,7 @@
     border-radius: 8px;
     font-size: 12px;
     margin-bottom: 10px;
+    line-height: 1.4;
 }
 
 .feedback.success {
