@@ -79,6 +79,73 @@ const LandingPage = ({ onSelectModule }) => {
                     color: "#ec4899"
                 }
             ]
+        },
+        managing: {
+            id: 'managing',
+            title: "Managing AI",
+            subtitle: "Run AI agents as reliable work systems",
+            icon: "🎛️",
+            gradient: "linear-gradient(135deg, #10b981, #3b82f6)",
+            lessons: [
+                {
+                    id: 'managing1',
+                    title: "Computer-User Agents",
+                    desc: "How agents see, decide, and act. Failure modes: misreads, drift, loops.",
+                    duration: "10 min",
+                    color: "#10b981"
+                },
+                {
+                    id: 'managing2',
+                    title: "Delegation Design",
+                    desc: "Turn vague goals into agent-friendly specs with acceptance criteria.",
+                    duration: "10 min",
+                    color: "#22c55e"
+                },
+                {
+                    id: 'managing3',
+                    title: "Monitoring Agents",
+                    desc: "Logs, metrics, thresholds, and runbooks. Trust through observability.",
+                    duration: "10 min",
+                    color: "#3b82f6"
+                }
+            ]
+        },
+        designing: {
+            id: 'designing',
+            title: "Designing AI",
+            subtitle: "Shape AI behavior responsibly",
+            icon: "🎨",
+            gradient: "linear-gradient(135deg, #f59e0b, #ef4444)",
+            lessons: [
+                {
+                    id: 'designing1',
+                    title: "Fine-Tuning: Teaching New Habits",
+                    desc: "Reinforcing patterns with examples. Risks: overfitting, forgetting, bias.",
+                    duration: "10 min",
+                    color: "#f59e0b"
+                },
+                {
+                    id: 'designing2',
+                    title: "Bias Mitigation",
+                    desc: "Layered approach: data, prompts, UI, policy, escalation.",
+                    duration: "10 min",
+                    color: "#f97316"
+                },
+                {
+                    id: 'designing3',
+                    title: "AI Evals 101",
+                    desc: "Rubrics, golden sets, tail risk. Measure what matters.",
+                    duration: "10 min",
+                    color: "#ef4444"
+                },
+                {
+                    id: 'designing4',
+                    title: "The Big Idea: Shape + Safeguard + Measure",
+                    desc: "Design the system, not just outputs. The responsible AI playbook.",
+                    duration: "10 min",
+                    color: "#dc2626"
+                }
+            ]
         }
     };
 

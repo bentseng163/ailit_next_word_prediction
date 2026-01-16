@@ -1,0 +1,186 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.goalCard {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px dashed rgba(245, 158, 11, 0.4);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+}
+
+.goalLabel {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #f59e0b;
+    margin-bottom: 6px;
+}
+
+.goalText {
+    font-size: 15px;
+    font-style: italic;
+    margin: 0;
+    color: var(--color-text-primary);
+}
+
+.section {
+    background: var(--color-bg-card);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.sectionTitle {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.counter {
+    color: var(--color-accent-primary);
+    font-weight: 700;
+}
+
+.steps {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color-bg-main);
+    border: 2px solid var(--color-bg-card-highlight);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+}
+
+.step.selected {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.step.unsafe {
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.step.unsafe.selected {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.orderBadge {
+    background: #3b82f6;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.warnBadge {
+    margin-left: auto;
+}
+
+.criteria,
+.escalate {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.criteriaBtn,
+.escalateBtn {
+    background: var(--color-bg-main);
+    border: 1px solid var(--color-bg-card-highlight);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.criteriaBtn.selected {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.escalateBtn.selected {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.submitBtn {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.results {
+    background: var(--color-bg-card);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.scoreRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.score {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.feedback {
+    background: rgba(245, 158, 11, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.feedbackItem {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--color-text-primary);
+}
+
+.insight {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+}

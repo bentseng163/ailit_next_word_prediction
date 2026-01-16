@@ -1,0 +1,156 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.partsPool {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.poolLabel {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.partChip {
+    background: var(--color-bg-card);
+    border: 2px solid var(--color-bg-card-highlight);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 11px;
+    line-height: 1.4;
+    cursor: grab;
+    transition: all 0.15s ease;
+}
+
+.partChip:active {
+    cursor: grabbing;
+}
+
+.partChip.assigned {
+    cursor: default;
+    text-decoration: line-through;
+}
+
+.dropZones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.dropZone {
+    background: var(--color-bg-card);
+    border: 2px dashed;
+    border-radius: 10px;
+    min-height: 100px;
+    overflow: hidden;
+}
+
+.dropZone.correct {
+    border-style: solid;
+    border-color: #10b981 !important;
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.dropZone.wrong {
+    border-style: solid;
+    border-color: #ef4444 !important;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.zoneHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+}
+
+.zoneLetter {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.zoneName {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.zoneContent {
+    padding: 8px;
+    min-height: 60px;
+}
+
+.placeholder {
+    color: var(--color-text-muted);
+    font-size: 11px;
+    text-align: center;
+    padding: 16px;
+}
+
+.assignedText {
+    font-size: 10px;
+    line-height: 1.4;
+    opacity: 0.9;
+}
+
+.feedback {
+    margin-top: 6px;
+    font-size: 10px;
+    padding: 6px;
+    background: var(--color-bg-main);
+    border-radius: 4px;
+    line-height: 1.3;
+}
+
+.submitBtn {
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.results {
+    background: var(--color-bg-card);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.scoreRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.score {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.perfectMessage {
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 13px;
+    text-align: center;
+}

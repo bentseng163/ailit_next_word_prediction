@@ -1,0 +1,151 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.progressDots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-bg-card-highlight);
+    transition: all 0.2s ease;
+}
+
+.dot.active {
+    background: var(--color-accent-primary);
+    transform: scale(1.3);
+}
+
+.dot.complete {
+    background: #10b981;
+}
+
+.stepInfo {
+    text-align: center;
+}
+
+.stepTitle {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.stepDesc {
+    font-size: 12px;
+    opacity: 0.8;
+    line-height: 1.4;
+}
+
+.contextWindow {
+    border: 2px dashed var(--color-bg-card-highlight);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.contextWindow.warning {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.windowHeader {
+    background: var(--color-bg-card);
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.warningBadge {
+    background: rgba(239, 68, 68, 0.2);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    color: #ef4444;
+}
+
+.windowContent {
+    padding: 12px;
+    min-height: 140px;
+}
+
+.blocksContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.block {
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    padding: 6px;
+}
+
+.block.tiny {
+    width: calc(25% - 5px);
+    height: 32px;
+}
+
+.block.small {
+    width: calc(50% - 3px);
+    height: 40px;
+}
+
+.block.medium {
+    width: calc(50% - 3px);
+    height: 56px;
+}
+
+.block.large {
+    width: 100%;
+    height: 48px;
+}
+
+.nav {
+    display: flex;
+    gap: 10px;
+}
+
+.navBtn {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid var(--color-bg-card-highlight);
+    border-radius: 10px;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color: inherit;
+}
+
+.navBtn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.navBtnPrimary {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+}

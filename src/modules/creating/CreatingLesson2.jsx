@@ -3,24 +3,30 @@ import Layout from '../../components/Layout/Layout';
 import InteractiveCard from '../../components/InteractiveCard/InteractiveCard';
 
 // Interactives
-import ContextBudgetBuilder from '../../components/Interactives/ContextBudgetBuilder';
-import ContextPackChoice from '../../components/Interactives/ContextPackChoice';
+import ContextWindowStepper from '../../components/Interactives/ContextWindowStepper';
+import PromptSpecificitySlider from '../../components/Interactives/PromptSpecificitySlider';
+import ContextOptimizer from '../../components/Interactives/ContextOptimizer';
+import ContextScenarios from '../../components/Interactives/ContextScenarios';
 
-// Cover Image
+// Images
 import contextWindowCover from '../../assets/creating/context_window_cover.png';
+import humanForgetting from '../../assets/creating/human_forgetting.png';
+import contextLikeMemory from '../../assets/creating/context_like_memory.png';
+import contextResources from '../../assets/creating/context_resources.png';
+import contextRot from '../../assets/creating/context_rot.png';
+import promptVsContextEng from '../../assets/creating/prompt_vs_context_eng.png';
 
 /*
  * ============================================================================
- * LESSON 2: CONTEXT ENGINEERING 101
+ * LESSON 2: CONTEXT ENGINEERING
  * ============================================================================
  * 
- * HOOK: Why did the AI ignore your requirement… when you swear you told it?
+ * HOOK: Context is finite, like human working memory
  * 
- * MEANING: The model's "working memory" is the context window (the text you 
- *          provide in the conversation). If key constraints aren't in the 
- *          context RIGHT NOW, the model can't reliably use them—so it guesses.
+ * MEANING: More context ≠ better results. Learn to optimize what goes in.
  * 
- * FLOW: Theory anchor → Relevance bridge → Practical insights → Scenario practice → Recap
+ * FLOW: Hook → Analogy → Context Window → Evolution → Resources → Rot → 
+ *       Tradeoff → Optimize → Comparison → Scenarios → Summary
  * ============================================================================
  */
 
@@ -33,30 +39,25 @@ const CreatingLesson2 = ({ onExit }) => {
         // PAGE 0: Cover / Hook
         // =====================================================================
         {
-            title: "Context Engineering: Control the Model's Working Memory",
+            title: "Context Engineering",
             text: (
                 <div style={{ textAlign: "center" }}>
                     <img
                         src={contextWindowCover}
-                        alt="Context = Working Memory"
+                        alt="Context Engineering"
                         style={{
                             width: "100%",
                             height: "auto",
                             borderRadius: "16px",
-                            marginBottom: "20px",
+                            marginBottom: "16px",
                         }}
                     />
-
-                    <p style={{ marginBottom: 12 }}>
-                        <strong>Hot take:</strong> The AI didn't "forget" your requirement.
-                        It never saw it. 👀
+                    <p>
+                        Context is a <strong>critical but finite resource</strong> for LLMs to complete tasks.
                     </p>
-                    <p style={{ marginBottom: 12, opacity: 0.9 }}>
-                        Why did the AI ignore your constraint… when you swear you told it?
-                    </p>
-                    <p style={{ opacity: 0.8 }}>
-                        In 10 minutes, you'll learn to manage the model's "working memory"
-                        so key constraints stay in play. 🎛️
+                    <p style={{ opacity: 0.9 }}>
+                        In this lesson, we'll explore what context is and strategies for
+                        effectively managing it. 🧠
                     </p>
                 </div>
             ),
@@ -65,397 +66,354 @@ const CreatingLesson2 = ({ onExit }) => {
         },
 
         // =====================================================================
-        // PAGE 1: The Short-Term Memory Reality
+        // PAGE 1: Human Analogy
         // =====================================================================
         {
-            title: "The Short-Term Memory Reality",
+            title: "Even Smart People Forget",
             text: (
                 <>
                     <p>
-                        The model does <strong>not</strong> "remember" like a human.
-                        It uses what's in the <strong>current context</strong>—the text
-                        visible in this conversation right now.
+                        As brilliant as you are, you might occasionally forget to buy the
+                        Christmas gift for your partner, do your laundry, or put dishes in the sink.
                     </p>
-                    <p style={{ marginTop: 12, opacity: 0.9 }}>
-                        If you mentioned a constraint 3 messages ago but it's no longer
-                        in the window? <em>Gone.</em>
+                    <p>
+                        We know you're not lazy. You do care. Sometimes there's just
+                        <strong> too much on your mind</strong> at once.
                     </p>
                 </>
             ),
             component: (
-                /*
-                 * IMAGE PLACEHOLDER: Context Window = Working Memory
-                 * 
-                 * NANO BANANA PRO — IMAGE PROMPT
-                 * STYLE: Minimal flat vector infographic. Mobile-first.
-                 * 
-                 * CONTENT:
-                 * Title: "Context Window = Working Memory"
-                 * Illustrate a head icon with a small "window" inside showing limited text area.
-                 * Outside the window: faded text labeled "Not visible → not usable"
-                 * Footer: "If it's not in the window, it's not in play."
-                 */
-                <div style={{
-                    background: "var(--color-bg-card)",
-                    borderRadius: "12px",
-                    padding: "16px",
-                    border: "1px solid var(--color-bg-card-highlight)"
-                }}>
-                    <div style={{ textAlign: "center", marginBottom: "14px" }}>
-                        <div style={{
-                            width: "80px",
-                            height: "80px",
-                            background: "linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2))",
-                            borderRadius: "50%",
-                            margin: "0 auto",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            position: "relative"
-                        }}>
-                            <span style={{ fontSize: "32px" }}>🧠</span>
-                            <div style={{
-                                position: "absolute",
-                                bottom: "-4px",
-                                right: "-4px",
-                                background: "#3b82f6",
-                                borderRadius: "4px",
-                                padding: "2px 6px",
-                                fontSize: "10px",
-                                fontWeight: "bold",
-                                color: "white"
-                            }}>
-                                📄 Context
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style={{ display: "flex", gap: "8px", marginBottom: "12px" }}>
-                        <div style={{
-                            flex: 1,
-                            background: "rgba(16, 185, 129, 0.1)",
-                            borderRadius: "8px",
-                            padding: "10px",
-                            textAlign: "center"
-                        }}>
-                            <div style={{ fontSize: "18px", marginBottom: "4px" }}>✅</div>
-                            <div style={{ fontSize: "11px" }}>In context = usable</div>
-                        </div>
-                        <div style={{
-                            flex: 1,
-                            background: "rgba(239, 68, 68, 0.1)",
-                            borderRadius: "8px",
-                            padding: "10px",
-                            textAlign: "center"
-                        }}>
-                            <div style={{ fontSize: "18px", marginBottom: "4px" }}>🚫</div>
-                            <div style={{ fontSize: "11px" }}>Out of context = gone</div>
-                        </div>
-                    </div>
-
-                    <p style={{ fontSize: "12px", opacity: 0.7, textAlign: "center", margin: 0 }}>
-                        If it's not in the window, it's improv time. 🎭
-                    </p>
-                </div>
+                <img
+                    src={humanForgetting}
+                    alt="Human forgetting"
+                    style={{
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: "12px"
+                    }}
+                />
             ),
-            nextLabel: "Why this matters",
+            nextLabel: "Same for AI",
         },
 
         // =====================================================================
-        // PAGE 2: Missing Constraints = Wider Completion Space
+        // PAGE 2: Context = Working Memory
         // =====================================================================
         {
-            title: "Missing Constraints = Wider Completion Space",
+            title: "Context = Working Memory",
             text: (
                 <>
                     <p>
-                        When constraints are missing, the model has <strong>more plausible directions</strong> to go.
+                        That's also true for LLMs. The <strong>"context window"</strong> is like
+                        the working memory of a human brain.
                     </p>
-                    <p style={{ marginTop: 10, opacity: 0.9 }}>
-                        That's where drift, rework, and "why did it do that?!" come from.
+                    <p>
+                        The model does a great job with what's <em>in</em> its context,
+                        but even as windows grow larger, there are still limits on its attention.
                     </p>
                 </>
             ),
             component: (
-                /*
-                 * IMAGE PLACEHOLDER: Ambiguity Expands Outputs
-                 * 
-                 * NANO BANANA PRO — IMAGE PROMPT
-                 * STYLE: Minimal flat vector
-                 * 
-                 * CONTENT:
-                 * Title: "Ambiguity Expands Outputs"
-                 * Show a funnel:
-                 * Left: "Vague context" → splits into 5 branching arrows labeled "many plausible outputs"
-                 * Right: "Constrained context" → 1–2 arrows labeled "fewer outputs"
-                 * Footer: "Constraints shrink the search space"
-                 */
-                <div style={{
-                    background: "var(--color-bg-card)",
-                    borderRadius: "12px",
-                    padding: "16px"
-                }}>
-                    <div style={{ fontSize: "14px", fontWeight: 700, textAlign: "center", marginBottom: "14px" }}>
-                        🎯 Constraints Shrink the Output Space
-                    </div>
-
-                    <div style={{ display: "flex", gap: "12px" }}>
-                        <div style={{ flex: 1, textAlign: "center" }}>
-                            <div style={{
-                                background: "rgba(239, 68, 68, 0.1)",
-                                borderRadius: "10px",
-                                padding: "12px",
-                                marginBottom: "8px"
-                            }}>
-                                <div style={{ fontSize: "11px", fontWeight: 600, color: "#ef4444", marginBottom: "6px" }}>
-                                    ❌ Vague Context
-                                </div>
-                                <div style={{ fontSize: "24px" }}>📨</div>
-                                <div style={{ fontSize: "20px", margin: "4px 0" }}>↓</div>
-                                <div style={{ display: "flex", justifyContent: "center", gap: "2px", flexWrap: "wrap" }}>
-                                    {["📄", "📝", "📋", "📃", "📑"].map((e, i) => (
-                                        <span key={i} style={{ fontSize: "14px" }}>{e}</span>
-                                    ))}
-                                </div>
-                            </div>
-                            <div style={{ fontSize: "10px", opacity: 0.7 }}>Many plausible outputs</div>
-                        </div>
-
-                        <div style={{ flex: 1, textAlign: "center" }}>
-                            <div style={{
-                                background: "rgba(16, 185, 129, 0.1)",
-                                borderRadius: "10px",
-                                padding: "12px",
-                                marginBottom: "8px"
-                            }}>
-                                <div style={{ fontSize: "11px", fontWeight: 600, color: "#10b981", marginBottom: "6px" }}>
-                                    ✅ Constrained Context
-                                </div>
-                                <div style={{ fontSize: "24px" }}>📨+🔒</div>
-                                <div style={{ fontSize: "20px", margin: "4px 0" }}>↓</div>
-                                <div style={{ display: "flex", justifyContent: "center", gap: "2px" }}>
-                                    <span style={{ fontSize: "14px" }}>📄</span>
-                                </div>
-                            </div>
-                            <div style={{ fontSize: "10px", opacity: 0.7 }}>Fewer (better) outputs</div>
-                        </div>
-                    </div>
-
-                    <p style={{ fontSize: "11px", opacity: 0.7, textAlign: "center", margin: "12px 0 0 0" }}>
-                        💡 Tight context = less rework
-                    </p>
-                </div>
+                <img
+                    src={contextLikeMemory}
+                    alt="Context window like working memory"
+                    style={{
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: "12px"
+                    }}
+                />
             ),
-            nextLabel: "Practice budgeting",
+            nextLabel: "See It Grow",
         },
 
         // =====================================================================
-        // PAGE 3: Interactive — Context Budget Builder
+        // PAGE 3: Interactive - Context Window Evolution
         // =====================================================================
         {
-            title: "🎛️ Context Budget Builder",
+            title: "Watch the Context Grow",
             text: (
-                <>
-                    <p>
-                        Context space is limited. How do you allocate it?
-                    </p>
-                    <p style={{ opacity: 0.8, fontSize: "13px" }}>
-                        Adjust the sliders to prioritize different context types.
-                        Watch how your choices affect output quality.
-                    </p>
-                </>
+                <p>
+                    Let's see how a chatbot's context window evolves from a simple
+                    system prompt to potential <strong>overflow</strong>.
+                </p>
             ),
-            component: <ContextBudgetBuilder onComplete={() => setCanProceed(true)} />,
-            nextLabel: "Learn the template",
+            component: <ContextWindowStepper onComplete={() => setCanProceed(true)} />,
+            nextLabel: "What Goes In?",
         },
 
         // =====================================================================
-        // PAGE 4: The Practical Move — Constraints-First Headers
+        // PAGE 4: Common Resources
         // =====================================================================
         {
-            title: "The Practical Move: Constraints First",
+            title: "What Goes in Context?",
             text: (
-                <>
-                    <p>
-                        Use a simple structure that front-loads the important stuff:
-                    </p>
-                </>
+                <p>
+                    Different types of information compete for space in the context window.
+                    Each serves a purpose—but all consume tokens.
+                </p>
             ),
             component: (
-                /*
-                 * IMAGE PLACEHOLDER: Context Pack Template
-                 * 
-                 * NANO BANANA PRO — IMAGE PROMPT
-                 * STYLE: Minimal flat vector
-                 * 
-                 * CONTENT:
-                 * Title: "Context Pack (Constraints First)"
-                 * A document with bold headers:
-                 * GOAL / MUST-HAVE / MUST-NOT / SOURCES / OUTPUT / CHECKS
-                 * Footer: "Put constraints before prose"
-                 */
-                <div style={{
-                    background: "var(--color-bg-card)",
-                    borderRadius: "12px",
-                    padding: "16px",
-                    border: "1px solid rgba(6, 182, 212, 0.3)"
-                }}>
-                    <div style={{ fontSize: "14px", fontWeight: 700, textAlign: "center", marginBottom: "14px" }}>
-                        📋 Context Pack Template
-                    </div>
-
+                <div>
+                    <img
+                        src={contextResources}
+                        alt="Context resources"
+                        style={{
+                            width: "100%",
+                            height: "auto",
+                            borderRadius: "12px",
+                            marginBottom: "12px"
+                        }}
+                    />
                     <div style={{
-                        background: "var(--color-bg-main)",
+                        background: "var(--color-bg-card)",
                         borderRadius: "10px",
-                        padding: "14px",
-                        fontFamily: "monospace",
-                        fontSize: "12px",
-                        lineHeight: "2"
-                    }}>
-                        <div><span style={{ color: "#3b82f6", fontWeight: 700 }}>GOAL:</span> [outcome + audience]</div>
-                        <div><span style={{ color: "#10b981", fontWeight: 700 }}>MUST-HAVE:</span> [required elements]</div>
-                        <div><span style={{ color: "#ef4444", fontWeight: 700 }}>MUST-NOT:</span> [prohibited elements]</div>
-                        <div><span style={{ color: "#8b5cf6", fontWeight: 700 }}>SOURCES:</span> [reference material]</div>
-                        <div><span style={{ color: "#06b6d4", fontWeight: 700 }}>OUTPUT:</span> [format spec]</div>
-                        <div><span style={{ color: "#f59e0b", fontWeight: 700 }}>CHECKS:</span> [verification rules]</div>
-                    </div>
-
-                    <div style={{
-                        marginTop: "14px",
-                        padding: "10px",
-                        background: "rgba(16, 185, 129, 0.1)",
-                        borderRadius: "8px",
-                        fontSize: "12px",
-                        textAlign: "center"
-                    }}>
-                        💡 <strong>Pro tip:</strong> Put constraints before prose.
-                        The model pays more attention to what comes first.
-                    </div>
-                </div>
-            ),
-            nextLabel: "Scenario practice",
-        },
-
-        // =====================================================================
-        // PAGE 5: Scenario Practice — Choose What to Include
-        // =====================================================================
-        {
-            title: "Scenario: Context Pack Under Pressure",
-            text: (
-                <>
-                    <p>
-                        You have limited context budget. What do you include?
-                    </p>
-                    <p style={{ opacity: 0.8, fontSize: "13px" }}>
-                        Choose wisely—every item costs tokens. Miss the essentials
-                        and the model will fill the gaps with guesses.
-                    </p>
-                </>
-            ),
-            component: <ContextPackChoice onComplete={() => setCanProceed(true)} />,
-            nextLabel: "Final recap",
-        },
-
-        // =====================================================================
-        // PAGE 6: Recap — You're Managing Attention
-        // =====================================================================
-        {
-            title: "Recap: You're Managing Attention",
-            text: (
-                <div style={{ textAlign: "center" }}>
-                    <p style={{ marginBottom: 16 }}>
-                        Context engineering is basically: <strong>deciding what the model
-                            is allowed to pay attention to.</strong>
-                    </p>
-                </div>
-            ),
-            component: (
-                /*
-                 * IMAGE PLACEHOLDER: Context = Attention Control
-                 * 
-                 * NANO BANANA PRO — IMAGE PROMPT
-                 * STYLE: Minimal flat vector
-                 * 
-                 * CONTENT:
-                 * Title: "Context = Attention Control"
-                 * A spotlight shining on a few text blocks labeled "Goal / Constraints / Sources"
-                 * Other blocks outside spotlight are faded.
-                 * Footer: "If it's not spotlighted, it's improv time."
-                 */
-                <div style={{
-                    background: "linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(59, 130, 246, 0.15))",
-                    borderRadius: "16px",
-                    padding: "20px",
-                    border: "2px solid rgba(6, 182, 212, 0.3)"
-                }}>
-                    <div style={{ textAlign: "center", marginBottom: "16px" }}>
-                        <span style={{ fontSize: "40px" }}>🔦</span>
-                        <div style={{ fontSize: "14px", fontWeight: 700, marginTop: "8px" }}>
-                            Context = Attention Control
-                        </div>
-                    </div>
-
-                    <div style={{ display: "flex", gap: "8px", justifyContent: "center", marginBottom: "16px" }}>
-                        {["🎯 Goal", "🔒 Constraints", "📚 Sources"].map((item, i) => (
-                            <div key={i} style={{
-                                background: "rgba(16, 185, 129, 0.2)",
-                                borderRadius: "8px",
-                                padding: "8px 12px",
-                                fontSize: "11px",
-                                fontWeight: 600,
-                                border: "1px solid rgba(16, 185, 129, 0.4)"
-                            }}>
-                                {item}
-                            </div>
-                        ))}
-                    </div>
-
-                    <div style={{
-                        display: "flex",
-                        gap: "8px",
-                        justifyContent: "center",
-                        opacity: 0.4,
-                        marginBottom: "16px"
-                    }}>
-                        {["Background", "History", "Details"].map((item, i) => (
-                            <div key={i} style={{
-                                background: "var(--color-bg-card)",
-                                borderRadius: "8px",
-                                padding: "6px 10px",
-                                fontSize: "10px"
-                            }}>
-                                {item}
-                            </div>
-                        ))}
-                    </div>
-
-                    <div style={{
                         padding: "12px",
-                        background: "rgba(16, 185, 129, 0.1)",
-                        borderRadius: "10px",
-                        textAlign: "center"
+                        fontSize: "11px",
+                        lineHeight: "1.6"
                     }}>
-                        <div style={{ fontSize: "13px", fontWeight: 600, marginBottom: "6px" }}>
-                            🎯 Key Insight
-                        </div>
-                        <div style={{ fontSize: "12px", opacity: 0.9 }}>
-                            What you include in context determines what the model can use.<br />
-                            Everything else is improv. 🎭
+                        <strong>Common context resources:</strong>
+                        <ul style={{ margin: "8px 0 0 0", paddingLeft: "16px" }}>
+                            <li><strong>System Prompt:</strong> Instructions for behavior</li>
+                            <li><strong>Documents:</strong> Reference material</li>
+                            <li><strong>Images:</strong> Visual context (charts, photos)</li>
+                            <li><strong>Message History:</strong> Past conversation</li>
+                            <li><strong>Search Results:</strong> Retrieved information</li>
+                        </ul>
+                    </div>
+                </div>
+            ),
+            nextLabel: "The Catch",
+        },
+
+        // =====================================================================
+        // PAGE 5: Context Rot
+        // =====================================================================
+        {
+            title: "Sometimes Less is More",
+            text: (
+                <>
+                    <p>
+                        Here's the counterintuitive truth: <strong>more context can hurt performance</strong>.
+                    </p>
+                    <p>
+                        This is called <strong>"context rot"</strong>—as tokens increase,
+                        the model's ability to accurately recall information decreases.
+                    </p>
+                </>
+            ),
+            component: (
+                <div>
+                    <img
+                        src={contextRot}
+                        alt="Context rot curve"
+                        style={{
+                            width: "100%",
+                            height: "auto",
+                            borderRadius: "12px",
+                            marginBottom: "12px"
+                        }}
+                    />
+                    <div style={{
+                        background: "rgba(245, 158, 11, 0.1)",
+                        borderRadius: "10px",
+                        padding: "12px",
+                        fontSize: "12px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px"
+                    }}>
+                        <span style={{ fontSize: "20px" }}>⚠️</span>
+                        <div>
+                            Context has <strong>diminishing returns</strong>.
+                            Treat it as a finite resource to optimize, not maximize.
                         </div>
                     </div>
+                </div>
+            ),
+            nextLabel: "Tradeoffs",
+        },
 
-                    <p style={{
-                        fontSize: "11px",
-                        opacity: 0.6,
-                        textAlign: "center",
-                        margin: "12px 0 0 0",
-                        fontStyle: "italic"
-                    }}>
-                        Minimum viable context: Goal + Constraints + Sources + Format
+        // =====================================================================
+        // PAGE 6: Interactive - Prompt Specificity Slider
+        // =====================================================================
+        {
+            title: "System Prompt Tradeoffs",
+            text: (
+                <>
+                    <p>
+                        The system prompt is crucial, but it always occupies a fixed chunk of your
+                        context window.
+                    </p>
+                    <p>
+                        While you <em>can</em> make it extremely detailed, that takes away space for
+                        other info to come in. <strong>Finding the right balance is key.</strong>
+                    </p>
+                </>
+            ),
+            component: <PromptSpecificitySlider />,
+            nextLabel: "Optimize Context",
+        },
+
+        // =====================================================================
+        // PAGE 7: Interactive - Context Optimizer
+        // =====================================================================
+        {
+            title: "Optimize the Context Window",
+            text: (
+                <p>
+                    Now let's practice. Select the <strong>right resources</strong> for
+                    this AI task. Aim for <strong>98%+ accuracy</strong> with minimal context.
+                </p>
+            ),
+            component: <ContextOptimizer onComplete={() => setCanProceed(true)} />,
+            nextLabel: "The Big Picture",
+        },
+
+        // =====================================================================
+        // PAGE 8: Anatomy of Effective Context
+        // =====================================================================
+        {
+            title: "The Art of Context Engineering",
+            text: (
+                <>
+                    <p>
+                        Given that LLMs have a <strong>finite attention budget</strong>,
+                        good context engineering means finding the <em>smallest possible set</em> of
+                        high-signal tokens that maximize your desired outcome.
+                    </p>
+                </>
+            ),
+            component: (
+                <div style={{
+                    background: "linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1))",
+                    borderRadius: "12px",
+                    padding: "16px",
+                    textAlign: "center"
+                }}>
+                    <p style={{ margin: "0 0 12px 0", fontSize: "14px", fontWeight: 600 }}>
+                        🎯 The Goal
+                    </p>
+                    <p style={{ margin: 0, fontSize: "13px", lineHeight: "1.6" }}>
+                        <strong>Maximum signal.</strong><br />
+                        <strong>Minimum tokens.</strong><br />
+                        <strong>Optimal outcome.</strong>
                     </p>
                 </div>
             ),
-            nextLabel: "Complete Lesson ✅",
+            nextLabel: "Prompt vs Context",
+        },
+
+        // =====================================================================
+        // PAGE 9: Prompt vs Context Engineering
+        // =====================================================================
+        {
+            title: "Prompt ⊂ Context Engineering",
+            text: (
+                <>
+                    <p>
+                        Remember the CPCO framework from Lesson 1? That's <strong>prompt engineering</strong>.
+                    </p>
+                    <p>
+                        <strong>Context engineering</strong> is the bigger picture—it includes
+                        everything that goes into the context window.
+                    </p>
+                </>
+            ),
+            component: (
+                <img
+                    src={promptVsContextEng}
+                    alt="Prompt engineering is a subset of context engineering"
+                    style={{
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: "12px"
+                    }}
+                />
+            ),
+            nextLabel: "Practice",
+        },
+
+        // =====================================================================
+        // PAGE 10: Interactive - Context Scenarios
+        // =====================================================================
+        {
+            title: "Context Selection Challenge",
+            text: (
+                <p>
+                    For each scenario, select the <strong>optimal context resources</strong>.
+                    Choose wisely—too little or too much will hurt accuracy.
+                </p>
+            ),
+            component: <ContextScenarios onComplete={() => setCanProceed(true)} />,
+            nextLabel: "Summary",
+        },
+
+        // =====================================================================
+        // PAGE 11: Summary
+        // =====================================================================
+        {
+            title: "Summary: Context Engineering",
+            text: null,
+            component: (
+                <div>
+                    {/* Key concepts */}
+                    <div style={{
+                        background: "var(--color-bg-card)",
+                        borderRadius: "12px",
+                        padding: "14px",
+                        marginBottom: "12px"
+                    }}>
+                        {[
+                            { icon: "🧠", text: "Context window = AI's working memory" },
+                            { icon: "📉", text: "More tokens ≠ better results (context rot)" },
+                            { icon: "⚖️", text: "Balance specificity vs. token usage" },
+                            { icon: "🎯", text: "Goal: Maximum signal, minimum tokens" }
+                        ].map((item, i) => (
+                            <div key={i} style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "10px",
+                                padding: "8px 0",
+                                borderBottom: i < 3 ? "1px solid var(--color-bg-card-highlight)" : "none"
+                            }}>
+                                <span style={{ fontSize: "18px" }}>{item.icon}</span>
+                                <span style={{ fontSize: "12px", fontWeight: 500 }}>{item.text}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Relationship reminder */}
+                    <div style={{
+                        background: "rgba(139, 92, 246, 0.1)",
+                        borderRadius: "10px",
+                        padding: "12px",
+                        marginBottom: "12px",
+                        fontSize: "12px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px"
+                    }}>
+                        <span style={{ fontSize: "20px" }}>💡</span>
+                        <div>
+                            <strong>Remember:</strong> Prompt engineering is part of context engineering,
+                            not the other way around.
+                        </div>
+                    </div>
+
+                    {/* Takeaway */}
+                    <div style={{
+                        background: "linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1))",
+                        borderRadius: "10px",
+                        padding: "12px",
+                        textAlign: "center",
+                        fontSize: "12px"
+                    }}>
+                        🍌 Context is finite. Be strategic about what you feed the model.
+                    </div>
+                </div>
+            ),
+            nextLabel: "Complete Lesson",
         },
     ];
 
@@ -490,15 +448,18 @@ const CreatingLesson2 = ({ onExit }) => {
                 onNext={nextSlide}
                 onBack={prevSlide}
                 nextLabel={currentPage === pages.length - 1 ? "Complete Lesson" : currentContent.nextLabel}
-                isNextDisabled={!canProceed && false}
             >
-                <div style={{ marginBottom: 20 }}>
-                    {currentContent.text}
-                </div>
+                {currentContent.text && (
+                    <div style={{ marginBottom: 20 }}>
+                        {currentContent.text}
+                    </div>
+                )}
 
-                <div style={{ marginTop: 20 }}>
-                    {currentContent.component}
-                </div>
+                {currentContent.component && (
+                    <div>
+                        {currentContent.component}
+                    </div>
+                )}
             </InteractiveCard>
         </Layout>
     );

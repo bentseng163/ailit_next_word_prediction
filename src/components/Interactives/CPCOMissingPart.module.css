@@ -1,0 +1,165 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.progress {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-bg-card-highlight);
+}
+
+.dot.active {
+    background: var(--color-accent-primary);
+    transform: scale(1.2);
+}
+
+.dot.complete {
+    background: #10b981;
+}
+
+.scenario {
+    background: var(--color-bg-card);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.scenarioTitle {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.scenarioNum {
+    background: var(--color-accent-primary);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+}
+
+.promptBox {
+    background: var(--color-bg-main);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.promptLabel {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 700;
+    opacity: 0.6;
+    margin-bottom: 6px;
+}
+
+.promptText {
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0;
+    font-style: italic;
+}
+
+.question {
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.option {
+    padding: 12px;
+    border: 2px solid var(--color-bg-card-highlight);
+    border-radius: 8px;
+    background: var(--color-bg-main);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+}
+
+.option:hover:not(:disabled) {
+    border-color: var(--color-accent-primary);
+}
+
+.option.selected {
+    border-color: var(--color-accent-primary);
+    background: rgba(139, 92, 246, 0.1);
+}
+
+.option.correct {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.option.wrong {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.option.showCorrect {
+    border-color: #10b981;
+}
+
+.checkmark {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #10b981;
+}
+
+.feedback {
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.feedback p {
+    margin: 0;
+}
+
+.feedbackCorrect {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.feedbackWrong {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.feedbackHeader {
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.nextBtn {
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
