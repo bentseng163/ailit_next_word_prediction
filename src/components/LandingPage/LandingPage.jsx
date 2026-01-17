@@ -64,13 +64,13 @@ const LandingPage = ({ onSelectModule }) => {
                     duration: "10 min",
                     color: "#a855f7"
                 },
-                {
-                    id: 'creating3',
-                    title: "Agent Briefing",
-                    desc: "Delegate work to agents without chaos. Objective, tools, constraints, stop rules.",
-                    duration: "10 min",
-                    color: "#d946ef"
-                },
+                // {
+                //     id: 'creating3',
+                //     title: "Agent Briefing",
+                //     desc: "Delegate work to agents without chaos. Objective, tools, constraints, stop rules.",
+                //     duration: "10 min",
+                //     color: "#d946ef"
+                // },
                 {
                     id: 'creating4',
                     title: "The Big Idea: Completion Space",

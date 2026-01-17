@@ -1,0 +1,140 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.instruction {
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+.toggles {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--color-bg-card);
+    border: 2px solid var(--color-bg-card-highlight);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.toggle.active {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.toggleIcon {
+    font-size: 20px;
+}
+
+.toggleText {
+    flex: 1;
+    text-align: left;
+}
+
+.toggleLabel {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.toggleDesc {
+    font-size: 10px;
+    opacity: 0.7;
+}
+
+.toggleSwitch {
+    width: 40px;
+    height: 22px;
+    background: var(--color-bg-card-highlight);
+    border-radius: 11px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.toggleSwitch.on {
+    background: #10b981;
+}
+
+.toggleKnob {
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: all 0.2s ease;
+}
+
+.toggleSwitch.on .toggleKnob {
+    left: 20px;
+}
+
+.spaceContainer {
+    background: var(--color-bg-card);
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.spaceLabel {
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    opacity: 0.7;
+}
+
+.space {
+    min-height: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: var(--color-bg-main);
+    border-radius: 8px;
+    position: relative;
+}
+
+.dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+.targetLabel {
+    position: absolute;
+    bottom: 4px;
+    right: 8px;
+    font-size: 10px;
+    color: #10b981;
+    font-weight: 600;
+}
+
+.statusBadge {
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid;
+}
+
+.insight {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 12px;
+    line-height: 1.5;
+}
